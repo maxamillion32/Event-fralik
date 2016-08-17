@@ -1,9 +1,12 @@
 package com.test.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,36 +19,22 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FragmentPagerAdapter adapterViewPager;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setToolbarAndDrawer();
-    }
+        setupToolbarAndDrawer();
 
-    private void setToolbarAndDrawer() {
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),MainActivity.this);
+        viewPager.setAdapter(adapterViewPager);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 
@@ -103,6 +92,112 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
+
+    private void setupToolbarAndDrawer() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    private static class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private static int TAB_COUNT = 5;
+
+        private String tabTitles[] = new String[] { "EVENTS", "CATEGORIES", "Tab3", "Tab4", "Tab5" };
+        private Context context;
+
+        public MyPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return TAB_COUNT;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+//
+//            return FirstFragment.newInstance(position + 1);
+//
+
+            switch (position) {
+
+                case 0:
+                    return FirstFragment.newInstance(position+1);
+
+                case 1:
+                    return FirstFragment.newInstance(position+1);
+
+                case 2:
+                    return FirstFragment.newInstance(position+1);
+
+                case 3:
+                    return FirstFragment.newInstance(position+1);
+
+                case 4:
+                    return FirstFragment.newInstance(position+1);
+
+            }
+
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+//            return super.getPageTitle(position);
+            return tabTitles[position];
+        }
+    }
+
+
+//    public static class MyPagerAdapter extends FragmentPagerAdapter {
+//        private static int TAB_COUNT = 3;
+//
+//        public MyPagerAdapter(FragmentManager fragmentManager) {
+//            super(fragmentManager);
+//        }
+//
+//        // Returns total number of pages
+//        @Override
+//        public int getCount() {
+//            return TAB_COUNT;
+//        }
+//
+//        // Returns the fragment to display for that page
+//        @Override
+//        public Fragment getItem(int position) {
+//            switch (position) {
+//                case 0: // Fragment # 0 - This will show FirstFragment
+//                    return FirstFragment.newInstance(0, "Page # 1");
+//                case 1: // Fragment # 0 - This will show FirstFragment different title
+//                    return FirstFragment.newInstance(1, "Page # 2");
+//                case 2: // Fragment # 1 - This will show SecondFragment
+//                    return SecondFragment.newInstance(2, "Page # 3");
+//                default:
+//                    return null;
+//            }
+//        }
+//
+//        // Returns the page title for the top indicator
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            return "Page " + position;
+//        }
+//
+//    }
 }
