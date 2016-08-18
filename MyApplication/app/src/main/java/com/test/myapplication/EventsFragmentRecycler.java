@@ -17,8 +17,6 @@ import java.util.LinkedList;
  */
 public class EventsFragmentRecycler extends Fragment {
 
-
-
     public static final String ARG_PAGE = "ARG_PAGE";
     private String title;
     private int page;
