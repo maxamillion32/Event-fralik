@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -16,27 +17,41 @@ import java.util.LinkedList;
  */
 public class EventsFragmentRecycler extends Fragment {
 
+
+
+    public static final String ARG_PAGE = "ARG_PAGE";
+    private String title;
+    private int page;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter rvAdapter;
     private RecyclerView.LayoutManager rvLayoutManager;
 
     private LinkedList<String> dataList = new LinkedList<String>();
 
-    public static EventsFragmentRecycler newInstance(int page,String title) {
+    public static EventsFragmentRecycler newInstance(int page) {
 
         EventsFragmentRecycler eventsFragment = new EventsFragmentRecycler();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("page0",page);
-        bundle.putString("Events",title);
-
+        bundle.putInt(ARG_PAGE,page);
         eventsFragment.setArguments(bundle);
 
         return eventsFragment;
 
-
-
     }
+
+
+//
+//    public static FirstFragment newInstance(int page) {
+//
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_PAGE, page);
+//        FirstFragment fragmentFirst = new FirstFragment();
+////        args.putString("someTitle", title);
+//        fragmentFirst.setArguments(args);
+//        return fragmentFirst;
+//    }
 
 //    public static FirstFragment newInstance(int page, String title) {
 //        FirstFragment fragmentFirst = new FirstFragment();
@@ -73,7 +88,27 @@ public class EventsFragmentRecycler extends Fragment {
         recyclerView.setLayoutManager(rvLayoutManager);
 
         // TODO:       rvAdapter = new CustomAdapter(dataList, this);
-        //TODO:          recyclerView.setAdapter(rvAdapter);
+        //TODO:        recyclerView.setAdapter(rvAdapter);
+
+        ArrayList<String> s = new ArrayList<>();
+        s.add("hello");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        s.add("a");
+        rvAdapter = new CustomRecyclerViewAdapterEvents(s);
+        recyclerView.setAdapter(rvAdapter);
 
 
 //        rvAdapter = new CustomRecyclerViewAdapterEvents(dataList,this);

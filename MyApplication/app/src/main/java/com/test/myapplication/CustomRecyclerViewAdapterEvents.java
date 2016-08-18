@@ -89,6 +89,16 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        TextView textView = holder.textViewTitle;
+        TextView textView1 = holder.textViewDate;
+
+        ImageView imageView = holder.imageView;
+        Button button = holder.button;
+
+        imageView.setImageResource(R.drawable.dog);
+        textView.setText("EVENT TITLE");
+        textView1.setText("AUG 26, 2016");
+
         //TODO: get the data from the arrayList and set the views (textView, imageView) with the data received
 
 
@@ -97,6 +107,6 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 }

@@ -33,7 +33,7 @@ public class FirstFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         page = getArguments().getInt(ARG_PAGE);
-//        title = getArguments().getString("someTitle");
+//      title = getArguments().getString("someTitle");
     }
 
     @Nullable

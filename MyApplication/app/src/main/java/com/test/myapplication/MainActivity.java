@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             switch (position) {
 
                 case 0:
-                    return FirstFragment.newInstance(position+1);
+                    return EventsFragmentRecycler.newInstance(position+1);
 
                 case 1:
                     return FirstFragment.newInstance(position+1);
