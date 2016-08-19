@@ -44,12 +44,20 @@
                 android:gravity="center"
                 android:layout_below="@+id/card_layout_event_title"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/card_layout_event_venue"
+                android:text="Venue"
+                android:gravity="center"
+                android:layout_below="@+id/card_layout_event_date"
+                />
 
             <Button
                 android:id="@+id/card_layout_event_button_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/card_layout_event_date"
+                android:layout_below="@+id/card_layout_event_venue"
                 />
 
         </RelativeLayout>

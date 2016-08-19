@@ -9,13 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.test.myapplication.Models.FreeEventsModel.Event;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
  * Created by NehaRege on 8/16/16.
  */
-public class EventsFragmentRecycler extends Fragment {
+public class EventsRecyclerViewFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private String title;
@@ -25,11 +27,13 @@ public class EventsFragmentRecycler extends Fragment {
     private RecyclerView.Adapter rvAdapter;
     private RecyclerView.LayoutManager rvLayoutManager;
 
-    private LinkedList<String> dataList = new LinkedList<String>();
+    private ArrayList<Event> allEventsdataList;
 
-    public static EventsFragmentRecycler newInstance(int page) {
+    public static EventsRecyclerViewFragment newInstance(int page) {
 
-        EventsFragmentRecycler eventsFragment = new EventsFragmentRecycler();
+        EventsRecyclerViewFragment eventsFragment = new EventsRecyclerViewFragment();
+
+
 
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_PAGE,page);
@@ -40,40 +44,10 @@ public class EventsFragmentRecycler extends Fragment {
     }
 
 
-//
-//    public static FirstFragment newInstance(int page) {
-//
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_PAGE, page);
-//        FirstFragment fragmentFirst = new FirstFragment();
-////        args.putString("someTitle", title);
-//        fragmentFirst.setArguments(args);
-//        return fragmentFirst;
-//    }
-
-//    public static FirstFragment newInstance(int page, String title) {
-//        FirstFragment fragmentFirst = new FirstFragment();
-//        Bundle args = new Bundle();
-//        args.putInt("someInt", page);
-//        args.putString("someTitle", title);
-//        fragmentFirst.setArguments(args);
-//        return fragmentFirst;
-//    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_first, container, false);
-//        TextView tvLabel = (TextView) view.findViewById(R.id.tvLabel);
-//        tvLabel.setText(page + " -- " + title);
-//        return view;
-//    }
 
     @Nullable
     @Override
@@ -87,6 +61,17 @@ public class EventsFragmentRecycler extends Fragment {
 
         // TODO:       rvAdapter = new CustomAdapter(dataList, this);
         //TODO:        recyclerView.setAdapter(rvAdapter);
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null) {
+            if(bundle.containsKey(MainActivity.CALL_ENQUE_ALL_EVENTS_KEY)) {
+                allEventsdataList = (ArrayList<Event>) getArguments().getSerializable(MainActivity.CALL_ENQUE_ALL_EVENTS_KEY);
+                rvAdapter = new CustomRecyclerViewAdapterEvents(getActivity(),allEventsdataList);
+
+
+            }
+        }
 
         ArrayList<String> s = new ArrayList<>();
         s.add("hello");
@@ -105,7 +90,7 @@ public class EventsFragmentRecycler extends Fragment {
         s.add("a");
         s.add("a");
         s.add("a");
-        rvAdapter = new CustomRecyclerViewAdapterEvents(s);
+//        rvAdapter = new CustomRecyclerViewAdapterEvents(s);
         recyclerView.setAdapter(rvAdapter);
 
 

@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.test.myapplication.Models.FreeEventsModel.Event;
+import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
+
 import java.util.ArrayList;
 
 /**
@@ -17,13 +21,19 @@ import java.util.ArrayList;
 public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<CustomRecyclerViewAdapterEvents.ViewHolder> {
 
     //TODO: define arraylist for the data
-    private ArrayList<String> data;
+    private ArrayList<Event> allEventsdataList;
+    private FreeEventsObject freeEventsObject;
+    private Context context;
+
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView textViewTitle;
         TextView textViewDate;
+        TextView textViewVenue;
+
         Button button;
 
         public ViewHolder(View itemView) {
@@ -32,6 +42,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             imageView = (ImageView) itemView.findViewById(R.id.card_layout_event_image);
             textViewTitle = (TextView) itemView.findViewById(R.id.card_layout_event_title);
             textViewDate = (TextView) itemView.findViewById(R.id.card_layout_event_date);
+            textViewVenue = (TextView) itemView.findViewById(R.id.card_layout_event_venue);
             button = (Button) itemView.findViewById(R.id.card_layout_event_button_share);
 
             button.setOnClickListener(new View.OnClickListener() {
@@ -44,12 +55,14 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
         }
     }
 
-    public CustomRecyclerViewAdapterEvents(ArrayList<String> inComingData) {
+    public CustomRecyclerViewAdapterEvents(Context context, ArrayList<Event> allEventsData) {
 
-        if(inComingData != null){
-            this.data = inComingData;
+        this.context = context;
+
+        if(allEventsData != null){
+            this.allEventsdataList = allEventsData;
         } else {
-            this.data = new ArrayList<>();
+            this.allEventsdataList = new ArrayList<>();
         }
 
     }
@@ -89,24 +102,44 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        TextView textView = holder.textViewTitle;
-        TextView textView1 = holder.textViewDate;
-
         ImageView imageView = holder.imageView;
+        TextView textViewTitle = holder.textViewTitle;
+        TextView textViewDate = holder.textViewDate;
+        TextView textViewVenue = holder.textViewVenue;
         Button button = holder.button;
 
-        imageView.setImageResource(R.drawable.dog);
-        textView.setText("EVENT TITLE");
-        textView1.setText("AUG 26, 2016");
+//        imageView.setImageResource(R.drawable.dog);
+//        textViewTitle.setText("EVENT TITLE");
+//        textViewDate.setText("AUG 26, 2016");
 
         //TODO: get the data from the arrayList and set the views (textView, imageView) with the data received
 
+        if(allEventsdataList.size()>0) {
+            Event event = allEventsdataList.get(position);
+
+            textViewTitle.setText(event.getName().getText());
+            textViewVenue.setText(event.getVenueId());
+
+            if (event.getLogo()!=null) {
+                Picasso.with(context).load(event.getLogo().getUrl()).into(imageView);
+            }
+
+//            if(value.getImage()!=null){
+//                Picasso.with(mContext).load(value.getImage().getUrl()).into(holder.rvImageView);
+//            }
+
+//            Picasso.with(mContext).load(value.getImage().getUrl()).into(holder.rvImageView);
+
+
+
+
+        }
 
 
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return allEventsdataList.size();
     }
 }

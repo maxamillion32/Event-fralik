@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.test.myapplication"
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+// for fb
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -31,4 +37,17 @@ dependencies {
 
     // For recyclerView
     compile 'com.android.support:recyclerview-v7:24.0.0'
+
+    // gson retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.google.code.gson:gson:2.6'
+
+    // picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // fb
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+
 }

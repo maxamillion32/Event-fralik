@@ -1,11 +1,15 @@
 package com.test.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,28 +17,68 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.test.myapplication.Models.FreeEventsModel.Event;
+import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.facebook.FacebookSdk;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
+    public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
+    private String TAG = "MainActivity";
 
     private FragmentPagerAdapter adapterViewPager;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
+
+    CallbackManager callbackManager;
+    LoginButton loginButton;
+
+//    private FragmentTransaction fragmentTransaction;
+//    private FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+
+
+
         setupToolbarAndDrawer();
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),MainActivity.this);
-        viewPager.setAdapter(adapterViewPager);
+        setupViewPagerAndTabs();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        facebookInitialization();
+
+        //facebookLogin();
+
 
     }
 
@@ -56,6 +100,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    // region Toolbar Items Click method
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -69,6 +123,10 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    //endregion
+
+    // region Navigation Drawer Clicks method
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -96,6 +154,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // endregion
+
+    // region Toolbar and Drawer setup method
+
     private void setupToolbarAndDrawer() {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -112,9 +174,158 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private static class MyPagerAdapter extends FragmentPagerAdapter {
+    //endregion
 
-        private static int TAB_COUNT = 5;
+    //region Facebook Initialization
+
+    private void facebookInitialization() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(getApplication(), "1813279535570044");
+
+    }
+    //endregion
+
+    //region facebook login
+    private void facebookLogin() {
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                loginButton.setVisibility(View.GONE);
+
+                tabLayout.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+
+    }
+    // endregion
+
+    //region retrofit call (Free Events)
+
+    public void loadFreeEvents() {
+
+        Log.i(TAG, "loadFreeEvents: ************** ENTERED *************");
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && !networkInfo.isConnected()){
+            Toast.makeText(MainActivity.this, R.string.toast_no_network, Toast.LENGTH_SHORT).show();
+        }
+
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Log.i(TAG, "loadFreeEvents: retrofit object created");
+
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> call = request.getAllFreeEvents("price=free",API_KEY_EVENT_BRITE);
+
+        call.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    Log.i(TAG, "onResponse: start --------------------");
+
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    Log.i(TAG, "onResponse: freeEventsObject "+response.body());
+
+                    ArrayList<Event> data = new ArrayList<Event>();
+
+                    Log.i(TAG, "onResponse: initial data size = "+data.size());
+
+                    data.addAll(freeEventsObject.getEvents());
+
+                    Log.i(TAG, "onResponse: ArrayList Data Size after adding = "+data.size());
+
+                    Log.i(TAG, "onResponse: data = "+data);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(CALL_ENQUE_ALL_EVENTS_KEY,data);
+
+                    EventsRecyclerViewFragment eventsRvFragment = new EventsRecyclerViewFragment();
+                    eventsRvFragment.setArguments(bundle);
+
+                    Log.i(TAG, "onResponse: end ---------------------");
+
+//                    EventsRecyclerViewFragment.newInstance(position)
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+
+                Log.i(TAG, "onFailure: ");
+
+            }
+        });
+    }
+
+    //endregion
+
+
+    //region VIEW PAGER CODE
+
+    //region View Pager setup method
+
+    private void setupViewPagerAndTabs() {
+
+
+
+
+
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),MainActivity.this);
+        viewPager.setAdapter(adapterViewPager);
+
+//        viewPager.setVisibility(View.INVISIBLE);
+
+
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+//        tabLayout.setVisibility(View.INVISIBLE);
+
+
+    }
+
+    //endregion
+
+    // region Inner Class MyPagerAdapter for View Pager
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private  int TAB_COUNT = 5;
 
         private String tabTitles[] = new String[] { "EVENTS", "CATEGORIES", "Tab3", "Tab4", "Tab5" };
         private Context context;
@@ -131,14 +342,16 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-//
+
 //            return FirstFragment.newInstance(position + 1);
-//
 
             switch (position) {
 
                 case 0:
-                    return EventsFragmentRecycler.newInstance(position+1);
+                    MainActivity.this.loadFreeEvents();
+                           // mainActivity = new MainActivity();
+                    //mainActivity.loadFreeEvents();
+                    return EventsRecyclerViewFragment.newInstance(position);
 
                 case 1:
                     return FirstFragment.newInstance(position+1);
@@ -164,40 +377,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //endregion\
 
-//    public static class MyPagerAdapter extends FragmentPagerAdapter {
-//        private static int TAB_COUNT = 3;
-//
-//        public MyPagerAdapter(FragmentManager fragmentManager) {
-//            super(fragmentManager);
-//        }
-//
-//        // Returns total number of pages
-//        @Override
-//        public int getCount() {
-//            return TAB_COUNT;
-//        }
-//
-//        // Returns the fragment to display for that page
-//        @Override
-//        public Fragment getItem(int position) {
-//            switch (position) {
-//                case 0: // Fragment # 0 - This will show FirstFragment
-//                    return FirstFragment.newInstance(0, "Page # 1");
-//                case 1: // Fragment # 0 - This will show FirstFragment different title
-//                    return FirstFragment.newInstance(1, "Page # 2");
-//                case 2: // Fragment # 1 - This will show SecondFragment
-//                    return SecondFragment.newInstance(2, "Page # 3");
-//                default:
-//                    return null;
-//            }
-//        }
-//
-//        // Returns the page title for the top indicator
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return "Page " + position;
-//        }
-//
-//    }
+    // endregion
+
 }
