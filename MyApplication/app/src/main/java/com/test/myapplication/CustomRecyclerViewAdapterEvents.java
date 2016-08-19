@@ -41,7 +41,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 
             imageView = (ImageView) itemView.findViewById(R.id.card_layout_event_image);
             textViewTitle = (TextView) itemView.findViewById(R.id.card_layout_event_title);
-            textViewDate = (TextView) itemView.findViewById(R.id.card_layout_event_date);
+//            textViewDate = (TextView) itemView.findViewById(R.id.card_layout_event_date);
             textViewVenue = (TextView) itemView.findViewById(R.id.card_layout_event_venue);
 //            button = (Button) itemView.findViewById(R.id.card_layout_event_button_share);
 

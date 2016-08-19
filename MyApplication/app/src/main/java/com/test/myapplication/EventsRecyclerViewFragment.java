@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +87,7 @@ public class EventsRecyclerViewFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_event_recycler_view);
 
         rvLayoutManager = new GridLayoutManager(getActivity(),2);
+//        rvLayoutManager = new StaggeredGridLayoutManager()
 //        rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
 
