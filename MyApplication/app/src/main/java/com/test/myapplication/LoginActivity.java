@@ -59,15 +59,7 @@ public class LoginActivity extends FragmentActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
 //        AppEventsLogger.activateApp(getApplication(),"1813279535570044");
 
-
-
         callbackManager = CallbackManager.Factory.create();
-
-
-//        LoginButton authButton = (LoginButton)view.findViewById(R.id.authButton);
-//        authButton.setFragment(this);
-//        authButton.setReadPermissions(Arrays.asList("user_status"));
-
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
 
@@ -112,14 +104,9 @@ public class LoginActivity extends FragmentActivity {
 
                                     loginButton.setVisibility(View.INVISIBLE);
 
-
-
-                                    LoginManager.getInstance().logOut();
+//                                    LoginManager.getInstance().logOut();
 
                                     finish();
-
-                                    Log.i(TAG, "onCompleted: name "+name);
-
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -139,8 +126,6 @@ public class LoginActivity extends FragmentActivity {
             @Override
             public void onCancel() {
 
-
-
             }
 
             @Override
@@ -148,8 +133,6 @@ public class LoginActivity extends FragmentActivity {
 
             }
         });
-
-//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
 

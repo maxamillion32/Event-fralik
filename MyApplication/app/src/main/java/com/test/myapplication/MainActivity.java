@@ -57,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CallbackManager callbackManager;
     LoginButton loginButton;
 
-//    private FragmentTransaction fragmentTransaction;
-//    private FragmentManager fragmentManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
-
-
 
         setupToolbarAndDrawer();
 
@@ -222,8 +217,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void loadFreeEvents() {
 
-        Log.i(TAG, "loadFreeEvents: ************** ENTERED *************");
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -242,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
 
-        Call<FreeEventsObject> call = request.getAllFreeEvents("price=free",API_KEY_EVENT_BRITE);
+        Call<FreeEventsObject> call = request.getAllFreeEvents("free","Bearer "+ API_KEY_EVENT_BRITE);
 
         call.enqueue(new Callback<FreeEventsObject>() {
             @Override
@@ -301,22 +294,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setupViewPagerAndTabs() {
 
-
-
-
-
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         viewPager.setAdapter(adapterViewPager);
 
 //        viewPager.setVisibility(View.INVISIBLE);
 
-
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
 //        tabLayout.setVisibility(View.INVISIBLE);
-
 
     }
 
@@ -325,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // region Inner Class MyPagerAdapter for View Pager
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
+        // region pager setup
         private  int TAB_COUNT = 5;
 
         private String tabTitles[] = new String[] { "EVENTS", "CATEGORIES", "Tab3", "Tab4", "Tab5" };
@@ -339,20 +327,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public int getCount() {
             return TAB_COUNT;
         }
+        //endregion
 
         @Override
         public Fragment getItem(int position) {
-
 //            return FirstFragment.newInstance(position + 1);
 
             switch (position) {
 
                 case 0:
-                    MainActivity.this.loadFreeEvents();
-                           // mainActivity = new MainActivity();
-                    //mainActivity.loadFreeEvents();
+
+                    Log.i(TAG, "getItem: switch case0");
+
+//                    MainActivity.this.loadFreeEvents();
+
+//                    Log.i(TAG, "getItem: loadFreeEvents call completed");
+
                     return EventsRecyclerViewFragment.newInstance(position);
 
+                // region case 1,2,3
                 case 1:
                     return FirstFragment.newInstance(position+1);
 
@@ -364,6 +357,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 case 4:
                     return FirstFragment.newInstance(position+1);
+
+                //endregion
 
             }
 
@@ -377,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    //endregion\
+    //endregion
 
     // endregion
 

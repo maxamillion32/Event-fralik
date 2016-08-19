@@ -21,11 +21,14 @@ public interface EventBriteAPIService {
      *
      */
 
+//    headers = {
+//        "Authorization": "Bearer SESXYS4X3FJ5LHZRWGKQ",
+//    }
+
     @GET("v3/events/")
     Call<FreeEventsObject> getAllFreeEvents(
-            @Query("free") String free,
-            @Header("MYTOKEN") String token);
-
+            @Query("price") String free,
+            @Header("Authorization") String token);
 
 
 //    //For trending news

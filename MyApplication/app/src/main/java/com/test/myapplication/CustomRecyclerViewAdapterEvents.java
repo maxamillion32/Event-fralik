@@ -22,7 +22,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 
     //TODO: define arraylist for the data
     private ArrayList<Event> allEventsdataList;
-    private FreeEventsObject freeEventsObject;
+
     private Context context;
 
 
@@ -34,7 +34,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
         TextView textViewDate;
         TextView textViewVenue;
 
-        Button button;
+//        Button button;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -43,14 +43,14 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             textViewTitle = (TextView) itemView.findViewById(R.id.card_layout_event_title);
             textViewDate = (TextView) itemView.findViewById(R.id.card_layout_event_date);
             textViewVenue = (TextView) itemView.findViewById(R.id.card_layout_event_venue);
-            button = (Button) itemView.findViewById(R.id.card_layout_event_button_share);
+//            button = (Button) itemView.findViewById(R.id.card_layout_event_button_share);
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO: handle the click here for share feature using share intents
-                }
-            });
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    //TODO: handle the click here for share feature using share intents
+//                }
+//            });
 
         }
     }
@@ -106,7 +106,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
         TextView textViewTitle = holder.textViewTitle;
         TextView textViewDate = holder.textViewDate;
         TextView textViewVenue = holder.textViewVenue;
-        Button button = holder.button;
+//        Button button = holder.button;
 
 //        imageView.setImageResource(R.drawable.dog);
 //        textViewTitle.setText("EVENT TITLE");
@@ -118,7 +118,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             Event event = allEventsdataList.get(position);
 
             textViewTitle.setText(event.getName().getText());
-            textViewVenue.setText(event.getVenueId());
+            textViewVenue.setText(event.getEnd().getTimezone());
 
             if (event.getLogo()!=null) {
                 Picasso.with(context).load(event.getLogo().getUrl()).into(imageView);
