@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darkGrey"
+    >
+
+
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,25 +25,9 @@
             android:layout_height="220dp"
             android:layout_gravity="center"
             android:src="@drawable/dog"
-            android:scaleType="fitXY" />
-
-        <TextView
-            android:id="@+id/detail_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="TITLE"
-            android:layout_gravity="left|bottom"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:layout_margin="10dp" />
-
-        <!--<ImageView-->
-            <!--android:layout_width="75dp"-->
-            <!--android:layout_height="75dp"-->
-            <!--android:layout_gravity="bottom|right"-->
-            <!--android:src="@drawable/ic_menu_camera"-->
-            <!--android:layout_margin="12dp" />-->
+            android:scaleType="fitXY"
+            android:elevation="25dp"
+            />
 
         <Button
             android:id="@+id/detail_register_button"
@@ -42,10 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:text="REGISTER"
-            android:backgroundTint="@android:color/holo_green_light"
-            android:alpha="0.75"
+            android:background="@android:color/holo_green_light"
             android:textColor="@android:color/white"
-            android:textSize="16dp"
+            android:textSize="16sp"
             />
 
     </FrameLayout>
@@ -56,14 +48,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TITLE"
-            android:textColor="#222"
+            android:textColor="@android:color/holo_red_light"
             android:textStyle="bold"
             android:textSize="22dp"
             android:layout_margin="8dp"
-
             />
 
         <TextView
@@ -72,74 +64,112 @@
             android:layout_height="wrap_content"
             android:text="The Golden Retriever is a large-sized breed of dog bred as gun dogs to retrieve shot waterfowl such as ducks and upland game birds during hunting and shooting parties, and were named 'retriever' because of their ability to retrieve shot game undamaged. Golden Retrievers have an instinctive love of water, and are easy to train to basic or advanced obedience standards. "
             android:layout_margin="8dp"
-            android:textColor="#666"
+            android:textColor="@android:color/white"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WHEN"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/holo_red_light"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_when"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date and time"
+            android:layout_marginLeft="8dp"
+            android:textColor="@android:color/white"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WHERE"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/holo_red_light"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_where"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="location"
+            android:layout_marginLeft="8dp"
+            android:textColor="@android:color/white"
 
             />
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floating_action_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            app:menu_animationDelayPerItem="55"
+            app:menu_backgroundColor="@android:color/transparent"
+            app:menu_buttonSpacing="0dp"
+            app:menu_colorNormal="#da3c2f"
+            app:menu_colorPressed="#dc4b3f"
+            app:menu_colorRipple="#99d4d4d4"
+            app:menu_fab_size="normal"
+            app:menu_icon="@drawable/ic_menu_share"
+            app:menu_labels_colorNormal="#333"
+            app:menu_labels_colorPressed="#444"
+            app:menu_labels_colorRipple="#66efecec"
+            app:menu_labels_cornerRadius="3dp"
+            app:menu_labels_ellipsize="none"
+            app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            app:menu_labels_margin="0dp"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_padding="8dp"
+            app:menu_labels_position="left"
+            app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            app:menu_labels_showShadow="true"
+            app:menu_labels_singleLine="false"
+            app:menu_labels_textColor="#f2f1f1"
+            app:menu_labels_textSize="15sp"
+            app:menu_openDirection="up"
+            app:menu_shadowRadius="4dp"
+            app:menu_shadowXOffset="1dp"
+            app:menu_shadowYOffset="4dp"
+            app:menu_showShadow="true"
+            android:layout_gravity="right">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floating_action_menu_item1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                android:showAsAction="ifRoom"
+                android:actionProviderClass="android.widget.ShareActionProvider"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floating_action_menu_item2_fb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/com_facebook_button_icon"
+                app:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/floating_action_menu_item3_messenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/com_facebook_send_button_icon"
+                app:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+
     </LinearLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/floating_action_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="11dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginRight="11dp"
-        app:menu_animationDelayPerItem="55"
-        app:menu_backgroundColor="@android:color/transparent"
-        app:menu_buttonSpacing="0dp"
-        app:menu_colorNormal="#da3c2f"
-        app:menu_colorPressed="#dc4b3f"
-        app:menu_colorRipple="#99d4d4d4"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/ic_menu_share"
-        app:menu_labels_colorNormal="#333"
-        app:menu_labels_colorPressed="#444"
-        app:menu_labels_colorRipple="#66efecec"
-        app:menu_labels_cornerRadius="3dp"
-        app:menu_labels_ellipsize="none"
-        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-        app:menu_labels_margin="0dp"
-        app:menu_labels_maxLines="-1"
-        app:menu_labels_padding="8dp"
-        app:menu_labels_position="left"
-        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-        app:menu_labels_showShadow="true"
-        app:menu_labels_singleLine="false"
-        app:menu_labels_textColor="#f2f1f1"
-        app:menu_labels_textSize="15sp"
-        app:menu_openDirection="up"
-        app:menu_shadowRadius="4dp"
-        app:menu_shadowXOffset="1dp"
-        app:menu_shadowYOffset="4dp"
-        app:menu_showShadow="true">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fab_add"
-            android:showAsAction="ifRoom"
-            android:actionProviderClass="android.widget.ShareActionProvider"
-            app:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item2_fb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/com_facebook_button_icon"
-            app:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item3_messenger"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/com_facebook_send_button_icon"
-            app:fab_size="mini" />
-
-    </com.github.clans.fab.FloatingActionMenu>
-
-
 </LinearLayout>
+
+</ScrollView>

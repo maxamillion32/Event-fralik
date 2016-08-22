@@ -30,6 +30,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.test.myapplication.APIService.EventBriteAPIService;
+import com.test.myapplication.Activity.DetailActivity;
 import com.test.myapplication.Activity.LoginActivity;
 import com.test.myapplication.Fragment.EventsRecyclerViewFragment;
 import com.test.myapplication.Fragment.FirstFragment;
@@ -47,7 +48,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.facebook.FacebookSdk;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        OnEventSelectedListener {
 
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
@@ -59,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     CallbackManager callbackManager;
     LoginButton loginButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void onEventSelected(Event selectedEvent) {
+
+        Log.i(TAG, "onEventSelected: ");
+
+        Log.i(TAG, "onEventSelected: description is "+selectedEvent.getDescription().getText());
+        Log.i(TAG, "onEventSelected: title is "+selectedEvent.getName().getText());
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        Log.i(TAG, "onEventSelected: new intent made");
+        
+        intent.putExtra("description",selectedEvent.getDescription().getText());
+        intent.putExtra("title",selectedEvent.getName().getText());
+        intent.putExtra("where",selectedEvent.getStart().getTimezone());
+        intent.putExtra("when",selectedEvent.getStart().getLocal());
+        intent.putExtra("category",selectedEvent.getCategoryId());
+
+        if(selectedEvent.getLogo() != null) {
+            intent.putExtra("image", selectedEvent.getLogo().getUrl());
+        }
+//        intent.putExtra("selectedEvent",selectedEvent);
+        startActivity(intent);
+
 
     }
 
@@ -288,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    //endregion
+    //endregion / //
 
 
     //region VIEW PAGER CODE

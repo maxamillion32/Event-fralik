@@ -46,6 +46,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Activity.DetailActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

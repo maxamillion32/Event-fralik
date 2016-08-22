@@ -2,6 +2,7 @@ package com.test.myapplication.RvAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  */
 public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<CustomRecyclerViewAdapterEvents.ViewHolder> {
 
+    private static final String TAG= "CustomRvAdapter";
     //TODO: define arraylist for the data
     private ArrayList<Event> allEventsdataList;
 
@@ -61,6 +63,9 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Log.i(TAG, "onClick:  item clicked at position "+getLayoutPosition());
+
                     onItemClickListener.onItemClick(getLayoutPosition());
                 }
             });
@@ -147,9 +152,6 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 //            }
 
 //            Picasso.with(mContext).load(value.getImage().getUrl()).into(holder.rvImageView);
-
-
-
 
         }
 

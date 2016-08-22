@@ -1,5 +1,7 @@
 package com.test.myapplication.Fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.test.myapplication.Activity.DetailActivity;
+import com.test.myapplication.OnEventSelectedListener;
 import com.test.myapplication.RvAdapter.CustomRecyclerViewAdapterEvents;
 import com.test.myapplication.APIService.EventBriteAPIService;
 import com.test.myapplication.Models.FreeEventsModel.Event;
@@ -33,7 +37,7 @@ public class EventsRecyclerViewFragment extends Fragment
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
 
-    public static String TAG="Fragment";
+    public static String TAG="EventsFragment";
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private String title;
@@ -42,6 +46,8 @@ public class EventsRecyclerViewFragment extends Fragment
     private RecyclerView recyclerView;
     private CustomRecyclerViewAdapterEvents rvAdapter;
 
+    private Event selectedEvent;
+    OnEventSelectedListener onEventSelectedListener;
 
 
 //    private RecyclerView.Adapter rvAdapter;
@@ -107,8 +113,49 @@ public class EventsRecyclerViewFragment extends Fragment
 
     }
 
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        try {
+//            mListener = (OnArticleSelectedListener) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(getActivity().toString() + " must implement OnArticleSelectedListener");
+//        }
+//    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            onEventSelectedListener = (OnEventSelectedListener) getActivity();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     @Override
     public void onItemClick(int position) {
+
+        Log.i(TAG, "onItemClick: position is "+position);
+
+        if(allEventsdataList != null) {
+
+            Log.i(TAG, "onItemClick: data list NOT null");
+            
+            selectedEvent = allEventsdataList.get(position);
+
+            Log.i(TAG, "onItemClick: selected event name is = "+selectedEvent.getName().getText());
+            onEventSelectedListener.onEventSelected(selectedEvent);
+
+
+
+
+        }
+
+
 
 
 
