@@ -1,17 +1,16 @@
-package com.test.myapplication;
+package com.test.myapplication.RvAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.test.myapplication.Models.FreeEventsModel.Event;
-import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
+import com.test.myapplication.R;
 
 import java.util.ArrayList;
 
@@ -24,6 +23,13 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
     private ArrayList<Event> allEventsdataList;
 
     private Context context;
+
+    private static OnRecyclerViewItemClickListener onItemClickListener;
+
+    public interface OnRecyclerViewItemClickListener {
+        void onItemClick(int position);
+    }
+
 
 
 
@@ -52,19 +58,31 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 //                }
 //            });
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick(getLayoutPosition());
+                }
+            });
+
         }
     }
 
-    public CustomRecyclerViewAdapterEvents(Context context, ArrayList<Event> allEventsData) {
-
+    public CustomRecyclerViewAdapterEvents(Context context,
+                                           ArrayList<Event> allEventsData,
+                                           OnRecyclerViewItemClickListener listener) {
         this.context = context;
+
+        if(listener != null) {
+            this.onItemClickListener = listener;
+
+        }
 
         if(allEventsData != null){
             this.allEventsdataList = allEventsData;
         } else {
             this.allEventsdataList = new ArrayList<>();
         }
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.test.myapplication;
+package com.test.myapplication.APIService;
 
 import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
 
@@ -28,6 +28,33 @@ public interface EventBriteAPIService {
     @GET("v3/events/")
     Call<FreeEventsObject> getAllFreeEvents(
             @Query("price") String free,
+            @Header("Authorization") String token);
+
+    @GET("v3/events/")
+    Call<FreeEventsObject> getAllEvents(
+            @Header("Authorization") String token);
+
+//    https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free&q=popular
+
+//
+
+    /**
+     *
+     *    https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free&q=popular&venue.country=America
+     *
+     *
+     * @param free
+     * @param popular
+     * @param America
+     * @param token
+     * @return
+     */
+
+    @GET("v3/events/")
+    Call<FreeEventsObject> getAllFreePopularEvents(
+            @Query("price") String free,
+            @Query("q") String popular,
+            @Query("venue.country") String America,
             @Header("Authorization") String token);
 
 

@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +29,10 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.test.myapplication.APIService.EventBriteAPIService;
+import com.test.myapplication.Activity.LoginActivity;
+import com.test.myapplication.Fragment.EventsRecyclerViewFragment;
+import com.test.myapplication.Fragment.FirstFragment;
 import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
 

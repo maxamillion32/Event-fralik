@@ -1,26 +1,22 @@
-package com.test.myapplication;
+package com.test.myapplication.Fragment;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.test.myapplication.RvAdapter.CustomRecyclerViewAdapterEvents;
+import com.test.myapplication.APIService.EventBriteAPIService;
 import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
+import com.test.myapplication.R;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by NehaRege on 8/16/16.
  */
-public class EventsRecyclerViewFragment extends Fragment {
+public class EventsRecyclerViewFragment extends Fragment
+        implements CustomRecyclerViewAdapterEvents.OnRecyclerViewItemClickListener {
 
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
@@ -44,7 +41,11 @@ public class EventsRecyclerViewFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private CustomRecyclerViewAdapterEvents rvAdapter;
+
+
+
 //    private RecyclerView.Adapter rvAdapter;
+
     private RecyclerView.LayoutManager rvLayoutManager;
 
     public ArrayList<Event> allEventsdataList;
@@ -56,8 +57,6 @@ public class EventsRecyclerViewFragment extends Fragment {
         Log.i(TAG, "newInstance method *************************************************************");
 
         EventsRecyclerViewFragment eventsFragment = new EventsRecyclerViewFragment();
-
-
 
         Log.i(TAG, "newInstance of events fragment created");
         
@@ -86,9 +85,9 @@ public class EventsRecyclerViewFragment extends Fragment {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_event_recycler_view);
 
-        rvLayoutManager = new GridLayoutManager(getActivity(),2);
+//        rvLayoutManager = new GridLayoutManager(getActivity(),2);
 //        rvLayoutManager = new StaggeredGridLayoutManager()
-//        rvLayoutManager = new LinearLayoutManager(getActivity());
+        rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
 
         Log.i(TAG, "onCreateView: calling loadfreeEvents() ");
@@ -100,11 +99,18 @@ public class EventsRecyclerViewFragment extends Fragment {
         // TODO:       rvAdapter = new CustomAdapter(dataList, this);
         //TODO:        recyclerView.setAdapter(rvAdapter);
             
-            rvAdapter = new CustomRecyclerViewAdapterEvents(getActivity(),allEventsdataList);
+            rvAdapter = new CustomRecyclerViewAdapterEvents(getActivity(),allEventsdataList,this);
 
         recyclerView.setAdapter(rvAdapter);
 
         return rootView;
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+
 
     }
 
@@ -124,8 +130,11 @@ public class EventsRecyclerViewFragment extends Fragment {
         final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
 
         Call<FreeEventsObject> call = request.getAllFreeEvents("free","Bearer "+ API_KEY_EVENT_BRITE);
+        Call<FreeEventsObject> callAll = request.getAllEvents("Bearer "+ API_KEY_EVENT_BRITE);
+        Call<FreeEventsObject> callAllFreePopular = request.getAllFreePopularEvents("free","popular","America","Bearer "+ API_KEY_EVENT_BRITE);
 
-        call.enqueue(new Callback<FreeEventsObject>() {
+
+        callAllFreePopular.enqueue(new Callback<FreeEventsObject>() {
             
             @Override
             public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
@@ -141,6 +150,11 @@ public class EventsRecyclerViewFragment extends Fragment {
                     Log.i(TAG, "onResponse: initial data size = "+allEventsdataList.size());
 
                     allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    FreeEventsObject obj = new FreeEventsObject();
+
+                    Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageSize());
+                    Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageNumber());
 
                     rvAdapter.notifyDataSetChanged();
 

@@ -22,7 +22,9 @@ android {
 // for fb
 
 repositories {
-    mavenCentral()
+    jcenter {
+        url "http://jcenter.bintray.com/"
+    }
 }
 
 dependencies {
@@ -48,6 +50,9 @@ dependencies {
 
     // fb
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    // floating action butto
+    compile 'com.github.clans:fab:1.6.4'
 
 
 }
