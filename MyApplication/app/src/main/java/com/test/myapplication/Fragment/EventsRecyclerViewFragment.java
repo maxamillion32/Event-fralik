@@ -1,7 +1,6 @@
 package com.test.myapplication.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.test.myapplication.Activity.DetailActivity;
 import com.test.myapplication.OnEventSelectedListener;
 import com.test.myapplication.RvAdapter.CustomRecyclerViewAdapterEvents;
 import com.test.myapplication.APIService.EventBriteAPIService;
@@ -48,7 +46,6 @@ public class EventsRecyclerViewFragment extends Fragment
 
     private Event selectedEvent;
     OnEventSelectedListener onEventSelectedListener;
-
 
 //    private RecyclerView.Adapter rvAdapter;
 

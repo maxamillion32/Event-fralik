@@ -1,19 +1,30 @@
 package com.test.myapplication;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +40,9 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.test.myapplication.APIService.EventBriteAPIService;
 import com.test.myapplication.Activity.DetailActivity;
 import com.test.myapplication.Activity.LoginActivity;
@@ -49,7 +63,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import com.facebook.FacebookSdk;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        OnEventSelectedListener {
+        OnEventSelectedListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private GoogleApiClient googleApiClient;
+    public Location lastLocation;
+    private LocationManager locationManager;
+    public static int ACCESS_LOCATION_REQUEST_CODE = 323;
+    public double latitude, longitude;
 
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
@@ -58,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentPagerAdapter adapterViewPager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+
+
 
     CallbackManager callbackManager;
     LoginButton loginButton;
@@ -69,6 +91,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
+
+        Log.i(TAG, "onCreate: ");
+
+        googleAPIClientSetup();
+
+        locationServiceStatusCheck();
 
         setupToolbarAndDrawer();
 
@@ -96,6 +124,187 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        googleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+//
+//    public void statusCheck()
+//    {
+//        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+//
+//        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+//            buildAlertMessageNoGps();
+//
+//        }
+//
+//
+//    }
+//    private void buildAlertMessageNoGps() {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(final DialogInterface dialog,  final int id) {
+//                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(final DialogInterface dialog, final int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        final AlertDialog alert = builder.create();
+//        alert.show();
+//
+//    }
+
+    public void locationServiceStatusCheck() {
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if( !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            alertDialogForLocation();
+
+        }
+
+
+    }
+
+    public void alertDialogForLocation() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected: ");
+
+        saveLocation();
+
+//        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+//
+//            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+//                    LocationService.MY_PERMISSION_ACCESS_COURSE_LOCATION );
+//        }
+
+        Log.i(TAG, "onConnected: ");
+
+        Toast.makeText(this,"Connected",Toast.LENGTH_SHORT).show();
+
+//        if(ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    ACCESS_LOCATION_REQUEST_CODE);
+//
+//        }
+
+//        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+
+
+
+
+
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+//                mGoogleApiClient);
+//        if (mLastLocation != null) {
+//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+//        }
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "onConnectionSuspended: ");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i(TAG, "onConnectionFailed: ");
+        Toast.makeText(this,"No GPS connection",Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveLocation() {
+        // Requesting location permission if we don't have it
+
+        if(ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
+            return;
+
+        }
+
+        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        
+        if(lastLocation != null) {
+            latitude = lastLocation.getLatitude();
+            longitude = lastLocation.getLongitude();
+
+            Log.i(TAG, "saveLocation: lat = "+lastLocation.getLatitude());
+            Log.i(TAG, "saveLocation: long = "+lastLocation.getLongitude());
+
+
+        } else {
+            Log.i(TAG, "saveLocation: lastlocation is null ");
+        }
+
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+////                mGoogleApiClient);
+////        if (mLastLocation != null) {
+////            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+////            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+////        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == ACCESS_LOCATION_REQUEST_CODE) {
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+
+                saveLocation();
+
+            } else {
+             //permission denied !
+            }
+        }
     }
 
     @Override
@@ -181,8 +390,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // endregion
 
-    // region Toolbar and Drawer setup method
 
+    private void googleAPIClientSetup() {
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* AppCompatActivity */,
+                        this /* OnConnectionFailedListener */)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+
+
+
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this /* FragmentActivity */,
+//                        this /* OnConnectionFailedListener */)
+//                .addApi(Drive.API)
+//                .addScope(Drive.SCOPE_FILE)
+//                .build();
+
+
+    }
+
+    // region Toolbar and Drawer setup method
     private void setupToolbarAndDrawer() {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

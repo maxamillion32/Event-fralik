@@ -48,7 +48,6 @@ public class LoginActivity extends FragmentActivity {
 
         setContentView(R.layout.fragment_login);
 
-
         FacebookSdk.sdkInitialize(getApplicationContext());
 //        AppEventsLogger.activateApp(getApplication(),"1813279535570044");
 
@@ -82,14 +81,11 @@ public class LoginActivity extends FragmentActivity {
 //                                    Log.i(TAG, "onCompleted: "+response.getError().getErrorCode());
 //                                    Log.i(TAG, "onCompleted: "+ response.getError().getErrorMessage());
 
-
-
                                     email = object.getString("email");
 //                                    firstName = object.getString("firstName");
 //                                    lastName = object.getString("lastName");
                                     name = object.getString("name");
 //                                    id = object.getString("id");
-
 //                                    textViewName.setText(name);
 //                                    textViewEmail.setText(email);
 
@@ -127,7 +123,6 @@ public class LoginActivity extends FragmentActivity {
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

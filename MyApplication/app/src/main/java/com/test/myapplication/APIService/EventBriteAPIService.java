@@ -1,5 +1,6 @@
 package com.test.myapplication.APIService;
 
+import com.test.myapplication.Models.CategoriesModel.CategoriesObject;
 import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
 
 import retrofit2.Call;
@@ -11,7 +12,6 @@ import retrofit2.http.Query;
  * Created by NehaRege on 8/18/16.
  */
 public interface EventBriteAPIService {
-
     /**
      *  Free Events
      *
@@ -55,7 +55,20 @@ public interface EventBriteAPIService {
             @Query("price") String free,
             @Query("q") String popular,
             @Query("venue.country") String America,
-            @Header("Authorization") String token);
+            @Header("Authorization") String token
+    );
+
+    /**
+     *
+     *   https://www.eventbriteapi.com/v3/categories/?token=AMDMMKWPWFPOCAUYVIW2
+     *
+     * @param token
+     * @return
+     */
+    @GET("/categories")
+    Call<CategoriesObject> getCategories(
+            @Header("Authorization") String token
+    );
 
 
 //    //For trending news
