@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        googleAPIClientSetup();
+
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
 
         Log.i(TAG, "onCreate: ");
-
-        googleAPIClientSetup();
 
         locationServiceStatusCheck();
 
@@ -399,16 +399,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
-
-
-
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .enableAutoManage(this /* FragmentActivity */,
-//                        this /* OnConnectionFailedListener */)
-//                .addApi(Drive.API)
-//                .addScope(Drive.SCOPE_FILE)
-//                .build();
-
 
     }
 
