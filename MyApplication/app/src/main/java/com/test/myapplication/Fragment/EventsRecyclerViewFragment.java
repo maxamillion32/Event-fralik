@@ -250,7 +250,7 @@ public class EventsRecyclerViewFragment extends Fragment
                 "America","Bearer "+ API_KEY_EVENT_BRITE);
         Call<FreeEventsObject> callAllNearbyEvents = request.getAllNearbyEvents("20mi","lat","longi","Bearer "+ API_KEY_EVENT_BRITE);
 
-        callAllFreePopular.enqueue(new Callback<FreeEventsObject>() {
+        callAllFreeEvents.enqueue(new Callback<FreeEventsObject>() {
             
             @Override
             public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
