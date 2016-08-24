@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.test.myapplication.MainActivity;
 import com.test.myapplication.OnEventSelectedListener;
@@ -58,8 +60,11 @@ public class EventsRecyclerViewFragment extends Fragment
     public ArrayList<Event> allEventsdataList;
 
     public String latitude, longitude;
-    
-    private Bundle bundleAPIData;
+
+    private Button buttonNearMe;
+    private Button buttonAllEvents;
+
+
 
     public static EventsRecyclerViewFragment newInstance(int page) {
 
@@ -79,11 +84,11 @@ public class EventsRecyclerViewFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i(TAG, "onCreate: ");
+
         allEventsdataList = new ArrayList<>();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        latitude = sharedPreferences.getString("latitude",null);
-        longitude = sharedPreferences.getString("longitude",null);
+
 
     }
 
@@ -102,24 +107,65 @@ public class EventsRecyclerViewFragment extends Fragment
         rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
 
+        buttonNearMe = (Button) rootView.findViewById(R.id.fragment_events_button_nearby_events);
+        buttonAllEvents = (Button) rootView.findViewById(R.id.fragment_events_button_all_events);
+
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        latitude = sharedPreferences.getString("latitude",null);
+        longitude = sharedPreferences.getString("longitude",null);
+
+
+
+
         Log.i(TAG, "onCreateView: calling loadfreeEvents() ");
 
 
 
         Log.i(TAG, "onCreateView: lat long is = "+latitude+" , "+longitude);
 
-        if(latitude!=null && longitude!=null) {
+//        loadFreeEvents();
 
-            Log.i(TAG, "onCreateView: lat long not null");
-            Log.i(TAG, "onCreateView: calling neabyevents method");
+//        buttonNearMe.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if(latitude!=null && longitude!=null) {
+//
+//                    Log.i(TAG, "onCreateView: lat long not null");
+//                    Log.i(TAG, "onCreateView: calling neabyevents method");
+//
+//                    loadAllNearbyEvents(latitude,longitude);
+//                    rvAdapter.notifyDataSetChanged();
+//
+//                } else {
+//                    Toast.makeText(getContext(),"Unable to find the location. Please check your location services",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//
+//            }
+//        });
+
+//        buttonAllEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                loadFreeEvents();
+//                rvAdapter.notifyDataSetChanged();
+//            }
+//        });
+
+//        if(latitude!=null && longitude!=null) {
+
+//            Log.i(TAG, "onCreateView: lat long not null");
+//            Log.i(TAG, "onCreateView: calling neabyevents method");
 
             loadAllNearbyEvents(latitude,longitude);
 
-        } else {
-
-            loadFreeEvents();
-
-        }
+//        } else {
+//
+//            loadFreeEvents();
+//
+//        }
 
         Log.i(TAG, "onCreateView: completed");
             
