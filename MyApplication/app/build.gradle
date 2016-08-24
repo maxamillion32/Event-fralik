@@ -25,6 +25,9 @@ repositories {
     jcenter {
         url "http://jcenter.bintray.com/"
     }
+
+    mavenCentral()
+
 }
 
 dependencies {
@@ -55,9 +58,5 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
 
     compile 'com.google.android.gms:play-services:9.4.0'
-
-
-
-
 
 }

@@ -25,12 +25,12 @@ public interface EventBriteAPIService {
 //        "Authorization": "Bearer SESXYS4X3FJ5LHZRWGKQ",
 //    }
 
-    @GET("v3/events/")
+    @GET("v3/events/search")
     Call<FreeEventsObject> getAllFreeEvents(
             @Query("price") String free,
             @Header("Authorization") String token);
 
-    @GET("v3/events/")
+    @GET("v3/events/search")
     Call<FreeEventsObject> getAllEvents(
             @Header("Authorization") String token);
 
@@ -50,7 +50,7 @@ public interface EventBriteAPIService {
      * @return
      */
 
-    @GET("v3/events/")
+    @GET("v3/events/search")
     Call<FreeEventsObject> getAllFreePopularEvents(
             @Query("price") String free,
             @Query("q") String popular,
@@ -67,6 +67,23 @@ public interface EventBriteAPIService {
      */
     @GET("/categories")
     Call<CategoriesObject> getCategories(
+            @Header("Authorization") String token
+    );
+
+    /*
+
+    https://www.eventbriteapi.com/v3/events/search/?location.within=20mi&location.latitude=37.7908693&location.longitude=-122.4011095&price=free&token=AMDMMKWPWFPOCAUYVIW2
+
+     */
+//    @GET ("events/search/?expand=venue,category,ticket_classes&sort_by=date&token=TOKEN")
+//    Call<Events> getEventsResults(@Query("q")String query,@Query("location.latitude")String lat, @Query("location.longitude")String lon);
+
+
+    @GET("/v3/events/search")
+    Call<FreeEventsObject> getAllNearbyEvents(
+            @Query("location.within") String within,
+            @Query("location.latitude") String lat,
+            @Query("location.longitude") String longi,
             @Header("Authorization") String token
     );
 

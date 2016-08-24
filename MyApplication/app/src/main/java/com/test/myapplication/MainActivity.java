@@ -4,12 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Location lastLocation;
     private LocationManager locationManager;
     public static int ACCESS_LOCATION_REQUEST_CODE = 323;
-    public double latitude, longitude;
+    public String latitude, longitude;
 
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
@@ -78,8 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentPagerAdapter adapterViewPager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-
-
+//
+//    FragmentManager fragmentManager;
+//    FragmentTransaction fragmentTransaction;
+//
 
     CallbackManager callbackManager;
     LoginButton loginButton;
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.i(TAG, "onCreate: ");
 
-        locationServiceStatusCheck();
+//        locationServiceStatusCheck();
 
         setupToolbarAndDrawer();
 
@@ -137,36 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         googleApiClient.disconnect();
         super.onStop();
     }
-//
-//    public void statusCheck()
-//    {
-//        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-//
-//        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-//            buildAlertMessageNoGps();
-//
-//        }
-//
-//
-//    }
-//    private void buildAlertMessageNoGps() {
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(final DialogInterface dialog,  final int id) {
-//                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    public void onClick(final DialogInterface dialog, final int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        final AlertDialog alert = builder.create();
-//        alert.show();
-//
-//    }
 
     public void locationServiceStatusCheck() {
 
@@ -177,8 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             alertDialogForLocation();
 
         }
-
-
     }
 
     public void alertDialogForLocation() {
@@ -210,38 +183,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         saveLocation();
 
-//        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-//
-//            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-//                    LocationService.MY_PERMISSION_ACCESS_COURSE_LOCATION );
-//        }
-
         Log.i(TAG, "onConnected: ");
 
         Toast.makeText(this,"Connected",Toast.LENGTH_SHORT).show();
-
-//        if(ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    ACCESS_LOCATION_REQUEST_CODE);
-//
-//        }
-
-//        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
-
-
-
-
-
-//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-//                mGoogleApiClient);
-//        if (mLastLocation != null) {
-//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-//        }
-
 
     }
 
@@ -272,24 +216,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         
         if(lastLocation != null) {
-            latitude = lastLocation.getLatitude();
-            longitude = lastLocation.getLongitude();
 
-            Log.i(TAG, "saveLocation: lat = "+lastLocation.getLatitude());
-            Log.i(TAG, "saveLocation: long = "+lastLocation.getLongitude());
+            latitude = String.valueOf(lastLocation.getLatitude());
+            longitude = String.valueOf(lastLocation.getLongitude());
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("latitude", latitude);
+            editor.putString("longitude",longitude);
+            editor.commit();
 
         } else {
             Log.i(TAG, "saveLocation: lastlocation is null ");
         }
-
-//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-////                mGoogleApiClient);
-////        if (mLastLocation != null) {
-////            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-////            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-////        }
-
 
     }
 
@@ -390,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // endregion
 
-
+    // region GoogleAPIClient Setup
     private void googleAPIClientSetup() {
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -399,8 +338,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
-
     }
+    // endregion
 
     // region Toolbar and Drawer setup method
     private void setupToolbarAndDrawer() {
@@ -463,81 +402,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     // endregion
 
-    //region retrofit call (Free Events)
-
-    public void loadFreeEvents() {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if(networkInfo != null && !networkInfo.isConnected()){
-            Toast.makeText(MainActivity.this, R.string.toast_no_network, Toast.LENGTH_SHORT).show();
-        }
-
-        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_FREE_EVENTS)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        Log.i(TAG, "loadFreeEvents: retrofit object created");
-
-        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
-
-        Call<FreeEventsObject> call = request.getAllFreeEvents("free","Bearer "+ API_KEY_EVENT_BRITE);
-
-        call.enqueue(new Callback<FreeEventsObject>() {
-            @Override
-            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
-                try {
-
-                    Log.i(TAG, "onResponse: start --------------------");
-
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    FreeEventsObject freeEventsObject = response.body();
-
-                    Log.i(TAG, "onResponse: freeEventsObject "+response.body());
-
-                    ArrayList<Event> data = new ArrayList<Event>();
-
-                    Log.i(TAG, "onResponse: initial data size = "+data.size());
-
-                    data.addAll(freeEventsObject.getEvents());
-
-                    Log.i(TAG, "onResponse: ArrayList Data Size after adding = "+data.size());
-
-                    Log.i(TAG, "onResponse: data = "+data);
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(CALL_ENQUE_ALL_EVENTS_KEY,data);
-
-                    EventsRecyclerViewFragment eventsRvFragment = new EventsRecyclerViewFragment();
-                    eventsRvFragment.setArguments(bundle);
-
-                    Log.i(TAG, "onResponse: end ---------------------");
-
-//                    EventsRecyclerViewFragment.newInstance(position)
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
-
-                Log.i(TAG, "onFailure: ");
-
-            }
-        });
-    }
-
-    //endregion / //
-
-
     //region VIEW PAGER CODE
 
     //region View Pager setup method
@@ -588,8 +452,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case 0:
 
                     Log.i(TAG, "getItem: switch case0");
-
-//                    MainActivity.this.loadFreeEvents();
 
 //                    Log.i(TAG, "getItem: loadFreeEvents call completed");
 
