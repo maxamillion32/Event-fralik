@@ -11,4 +11,20 @@
     <string name="facebook_app_id">1813279535570044</string>
 
     <string name="fb_login_protocol_scheme">fb1813279535570044</string>
+
+    <string name="key_event_description">description</string>
+    <string name="key_event_title">title</string>
+    <string name="key_event_city">city</string>
+    <string name="key_event_category">category</string>
+    <string name="key_event_price">price</string>
+    <string name="key_event_full_address">completeAddress</string>
+    <string name="key_event_time_date">timeAndDate</string>
+    <string name="key_event_image">image</string>
+
+    <string name="alert_dialog_message_gps_disabled">Your GPS seems to be disabled, do you want to enable it?</string>
+
+    <string name="toast_msg_no_connection">No GPS connection</string>
+    <string name="key_location_services_latitude">latitude</string>
+    <string name="key_location_services_longitude">longitude</string>
+    <string name="toast_login_successful">"Logged in as: "</string>
 </resources>

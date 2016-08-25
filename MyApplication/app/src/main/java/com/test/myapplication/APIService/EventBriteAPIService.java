@@ -12,18 +12,22 @@ import retrofit2.http.Query;
  * Created by NehaRege on 8/18/16.
  */
 public interface EventBriteAPIService {
-    /**
-     *  Free Events
-     *
-     *  URL: https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free
-     *
-     *
-     *
+    /*
+
+    headers = {
+        "Authorization": "Bearer SESXYS4X3FJ5LHZRWGKQ",
+    }
+
      */
 
-//    headers = {
-//        "Authorization": "Bearer SESXYS4X3FJ5LHZRWGKQ",
-//    }
+    /**
+     *
+     *    https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free
+     *
+     * @param free
+     * @param token
+     * @return
+     */
 
     @GET("v3/events/search")
     Call<FreeEventsObject> getAllFreeEvents(
@@ -39,9 +43,9 @@ public interface EventBriteAPIService {
 //
 
     /**
-     *
-     *    https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free&q=popular&venue.country=America
-     *
+
+        https://www.eventbriteapi.com/v3/events/?token=AMDMMKWPWFPOCAUYVIW2&price=free&q=popular&venue.country=America
+
      *
      * @param free
      * @param popular
@@ -59,8 +63,9 @@ public interface EventBriteAPIService {
     );
 
     /**
-     *
-     *   https://www.eventbriteapi.com/v3/categories/?token=AMDMMKWPWFPOCAUYVIW2
+
+        https://www.eventbriteapi.com/v3/categories/?token=AMDMMKWPWFPOCAUYVIW2
+
      *
      * @param token
      * @return
@@ -70,16 +75,19 @@ public interface EventBriteAPIService {
             @Header("Authorization") String token
     );
 
-    /*
+    /**
 
-    https://www.eventbriteapi.com/v3/events/search/?location.within=20mi&location.latitude=37.7908693&location.longitude=-122.4011095&price=free&token=AMDMMKWPWFPOCAUYVIW2
+     https://www.eventbriteapi.com/v3/events/search/?expand=venue,category,ticket_classes&location.within=20mi&location.latitude=37.7908693&location.longitude=-122.4011095&price=free&token=AMDMMKWPWFPOCAUYVIW2
 
+     *
+     * @param within
+     * @param lat
+     * @param longi
+     * @param token
+     * @return
      */
-//    @GET ("events/search/?expand=venue,category,ticket_classes&sort_by=date&token=TOKEN")
-//    Call<Events> getEventsResults(@Query("q")String query,@Query("location.latitude")String lat, @Query("location.longitude")String lon);
 
-
-    @GET("/v3/events/search")
+    @GET("/v3/events/search/?expand=venue,category,ticket_classes")
     Call<FreeEventsObject> getAllNearbyEvents(
             @Query("location.within") String within,
             @Query("location.latitude") String lat,

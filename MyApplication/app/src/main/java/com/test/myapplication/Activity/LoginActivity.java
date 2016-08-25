@@ -89,7 +89,7 @@ public class LoginActivity extends FragmentActivity {
 //                                    textViewName.setText(name);
 //                                    textViewEmail.setText(email);
 
-                                    Toast.makeText(LoginActivity.this, "Logged in as: "+email, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, getString(R.string.toast_login_successful)+ email, Toast.LENGTH_SHORT).show();
 
                                     loginButton.setVisibility(View.INVISIBLE);
 

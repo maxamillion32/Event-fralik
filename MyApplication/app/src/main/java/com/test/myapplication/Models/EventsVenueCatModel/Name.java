@@ -1,13 +1,10 @@
-package com.test.myapplication.Models.FreeEventsModel;
 
+package com.test.myapplication.Models.EventsVenueCatModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by NehaRege on 8/18/16.
- */
-public class Description {
+public class Name {
 
     @SerializedName("text")
     @Expose
@@ -51,8 +48,5 @@ public class Description {
     public void setHtml(String html) {
         this.html = html;
     }
-
-
-
 
 }

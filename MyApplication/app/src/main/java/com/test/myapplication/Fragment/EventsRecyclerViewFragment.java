@@ -41,9 +41,8 @@ public class EventsRecyclerViewFragment extends Fragment
 
     private static final String API_KEY_EVENT_BRITE = "AMDMMKWPWFPOCAUYVIW2";
     public static final String CALL_ENQUE_ALL_EVENTS_KEY = "AllEvents";
-    public static final String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
 
-    public static String TAG="EventsFragment";
+    public static String TAG="EventsRvFragment";
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private String title;
@@ -112,8 +111,8 @@ public class EventsRecyclerViewFragment extends Fragment
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        latitude = sharedPreferences.getString("latitude",null);
-        longitude = sharedPreferences.getString("longitude",null);
+        latitude = sharedPreferences.getString(getString(R.string.key_location_services_latitude),null);
+        longitude = sharedPreferences.getString(getString(R.string.key_location_services_longitude),null);
 
 
 
@@ -189,7 +188,6 @@ public class EventsRecyclerViewFragment extends Fragment
 //            throw new ClassCastException(getActivity().toString() + " must implement OnArticleSelectedListener");
         }
 
-
     }
 
     @Override
@@ -204,6 +202,7 @@ public class EventsRecyclerViewFragment extends Fragment
             selectedEvent = allEventsdataList.get(position);
 
             Log.i(TAG, "onItemClick: selected event name is = "+selectedEvent.getName().getText());
+
             onEventSelectedListener.onEventSelected(selectedEvent);
 
         }
@@ -226,6 +225,7 @@ public class EventsRecyclerViewFragment extends Fragment
         Call<FreeEventsObject> callAllNearbyEvents = request.getAllNearbyEvents("20mi",latitude,longitude,"Bearer "+ API_KEY_EVENT_BRITE);
 
         callAllNearbyEvents.enqueue(new Callback<FreeEventsObject>() {
+
             @Override
             public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
                 try {
@@ -265,11 +265,6 @@ public class EventsRecyclerViewFragment extends Fragment
 
             }
         });
-
-
-
-
-
 
     }
 
@@ -312,8 +307,6 @@ public class EventsRecyclerViewFragment extends Fragment
                     Log.i(TAG, "onResponse: initial data size = "+allEventsdataList.size());
 
                     allEventsdataList.addAll(freeEventsObject.getEvents());
-
-                    FreeEventsObject obj = new FreeEventsObject();
 
                     Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageSize());
                     Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageNumber());

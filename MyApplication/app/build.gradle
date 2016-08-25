@@ -59,4 +59,8 @@ dependencies {
 
     compile 'com.google.android.gms:play-services:9.4.0'
 
+    //uber
+    compile 'com.uber.sdk:rides-android:0.5.3'
+
+
 }

@@ -1,11 +1,13 @@
-package com.test.myapplication.Models.FreeEventsModel;
+
+package com.test.myapplication.Models.EventsVenueCatModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.test.myapplication.Models.FreeEventsModel.Location;
 
-public class FreeEventsObject {
+public class EventsVenueCatObject {
 
     @SerializedName("pagination")
     @Expose

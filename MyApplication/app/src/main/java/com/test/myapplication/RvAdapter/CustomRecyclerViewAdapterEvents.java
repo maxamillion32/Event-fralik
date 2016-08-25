@@ -1,6 +1,7 @@
 package com.test.myapplication.RvAdapter;
 
 import android.content.Context;
+import android.location.Address;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +21,13 @@ import java.util.ArrayList;
  */
 public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<CustomRecyclerViewAdapterEvents.ViewHolder> {
 
+
     private static final String TAG= "CustomRvAdapter";
     //TODO: define arraylist for the data
     private ArrayList<Event> allEventsdataList;
 
     private Context context;
+
 
     private static OnRecyclerViewItemClickListener onItemClickListener;
 
@@ -141,7 +144,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             Event event = allEventsdataList.get(position);
 
             textViewTitle.setText(event.getName().getText());
-            textViewVenue.setText(event.getEnd().getTimezone());
+            textViewVenue.setText(event.getVenue().getName());
 
             if (event.getLogo()!=null) {
                 Picasso.with(context).load(event.getLogo().getUrl()).into(imageView);

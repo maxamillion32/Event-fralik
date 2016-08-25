@@ -1,5 +1,5 @@
 
-package com.test.myapplication.Models.FreeEventsModel;
+package com.test.myapplication.Models.EventsVenueCatModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -37,11 +37,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -63,7 +60,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import com.facebook.FacebookSdk;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         OnEventSelectedListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -86,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    FragmentTransaction fragmentTransaction;
 //
 
+
     CallbackManager callbackManager;
+
     LoginButton loginButton;
 
     @Override
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+        builder.setMessage(R.string.alert_dialog_message_gps_disabled)
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -197,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.i(TAG, "onConnectionFailed: ");
-        Toast.makeText(this,"No GPS connection",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_msg_no_connection,Toast.LENGTH_SHORT).show();
     }
 
     private void saveLocation() {
@@ -222,8 +220,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("latitude", latitude);
-            editor.putString("longitude",longitude);
+            editor.putString(getString(R.string.key_location_services_latitude), latitude);
+            editor.putString(getString(R.string.key_location_services_longitude),longitude);
             editor.commit();
 
         } else {
@@ -254,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
     @Override
     public void onEventSelected(Event selectedEvent) {
 
@@ -265,14 +264,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, DetailActivity.class);
         Log.i(TAG, "onEventSelected: new intent made");
         
-        intent.putExtra("description",selectedEvent.getDescription().getText());
-        intent.putExtra("title",selectedEvent.getName().getText());
-        intent.putExtra("where",selectedEvent.getStart().getTimezone());
-        intent.putExtra("when",selectedEvent.getStart().getLocal());
-        intent.putExtra("category",selectedEvent.getCategoryId());
+        intent.putExtra(getString(R.string.key_event_description),selectedEvent.getDescription().getText());
+        intent.putExtra(getString(R.string.key_event_title),selectedEvent.getName().getText());
+//        intent.putExtra("address1",selectedEvent.getVenue().getAddress().getAddress1());
+        intent.putExtra(getString(R.string.key_event_city),selectedEvent.getVenue().getAddress().getCity());
+        intent.putExtra(getString(R.string.key_event_time_date),selectedEvent.getStart().getLocal());
+        intent.putExtra(getString(R.string.key_event_category),selectedEvent.getCategory().getName());
+        intent.putExtra(getString(R.string.key_event_price),selectedEvent.getTicketClasses().getClass());
+        intent.putExtra(getString(R.string.key_event_full_address),selectedEvent.getVenue().getAddress().getLocalizedAddressDisplay());
+
 
         if(selectedEvent.getLogo() != null) {
-            intent.putExtra("image", selectedEvent.getLogo().getUrl());
+            intent.putExtra(getString(R.string.key_event_image), selectedEvent.getLogo().getUrl());
         }
 //        intent.putExtra("selectedEvent",selectedEvent);
         startActivity(intent);
@@ -365,41 +368,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void facebookInitialization() {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(getApplication(), "1813279535570044");
+        AppEventsLogger.activateApp(getApplication(), getString(R.string.facebook_app_id));
 
     }
     //endregion
 
     //region facebook login
-    private void facebookLogin() {
-
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                loginButton.setVisibility(View.GONE);
-
-                tabLayout.setVisibility(View.VISIBLE);
-                viewPager.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-
-    }
+//    private void facebookLogin() {
+//
+//        loginButton = (LoginButton) findViewById(R.id.login_button);
+//
+//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//
+//                loginButton.setVisibility(View.GONE);
+//
+//                tabLayout.setVisibility(View.VISIBLE);
+//                viewPager.setVisibility(View.VISIBLE);
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//
+//            }
+//        });
+//
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+//
+//    }
     // endregion
 
     //region VIEW PAGER CODE

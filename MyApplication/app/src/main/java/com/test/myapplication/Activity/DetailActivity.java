@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.test.myapplication.Models.FreeEventsModel.Event;
-import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
 import com.test.myapplication.R;
 
 /**
@@ -22,24 +19,15 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG="DetailActivity";
 
-    private Event selectedEvent;
-
-    private String description;
-    private String title;
-    private String when;
-    private String where;
-
-
     private ImageView imageView;
 
     private TextView textViewTitle;
     private TextView textViewDescription;
     private TextView textViewWhen;
-    private TextView textViewWhere;
-
-    private Button buttonRegister;
-
-
+    private TextView textViewAdd1;
+//    private TextView textViewAdd2;
+//    private TextView textViewCity;
+    private TextView textViewCategory;
 
 
     @Override
@@ -54,39 +42,32 @@ public class DetailActivity extends AppCompatActivity {
         textViewTitle = (TextView) findViewById(R.id.detail_title);
         textViewDescription = (TextView) findViewById(R.id.detail_description);
         textViewWhen = (TextView) findViewById(R.id.detail_when);
-        textViewWhere = (TextView) findViewById(R.id.detail_where);
-        buttonRegister = (Button) findViewById(R.id.detail_register_button);
+        textViewAdd1 = (TextView) findViewById(R.id.detail_add1);
+//        textViewAdd2 = (TextView) findViewById(R.id.detail_add2);
+//        textViewCity = (TextView) findViewById(R.id.detail_city);
+        textViewCategory = (TextView) findViewById(R.id.detail_category);
 
         Intent intent = getIntent();
 
         Log.i(TAG, "onCreate: Intent received");
 
-
-        description = intent.getStringExtra("description");
-        title = intent.getStringExtra("title");
-        when = intent.getStringExtra("when");
-
 //        javax.xml.bind.DatatypeConverter.parseDateTime("2010-01-01T12:00:00Z")
 
-        Log.i(TAG, "onCreate: Received Intent Title = "+title);
-        Log.i(TAG, "onCreate: Received Intent des = "+description);
+        Log.i(TAG, "onCreate: Received Intent Title = "+ intent.getStringExtra(getString(R.string.key_event_title)));
+        Log.i(TAG, "onCreate: Received Intent des = "+ intent.getStringExtra(getString(R.string.key_event_description)));
 
-        textViewTitle.setText(title);
-        textViewDescription.setText(description);
-        textViewWhere.setText(intent.getStringExtra("where"));
-        textViewWhen.setText(intent.getStringExtra("when"));
-        Picasso.with(getApplicationContext()).load(intent.getStringExtra("image")).into(imageView);
+        textViewTitle.setText(intent.getStringExtra(getString(R.string.key_event_title)));
+        textViewDescription.setText(intent.getStringExtra(getString(R.string.key_event_description)));
+        textViewWhen.setText(intent.getStringExtra(getString(R.string.key_event_time_date)));
+        textViewAdd1.setText(intent.getStringExtra(getString(R.string.key_event_full_address)));
+//        textViewCity.setText(intent.getStringExtra(getString(R.string.key_event_city)));
+        textViewCategory.setText(intent.getStringExtra(getString(R.string.key_event_category)));
+
+        Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
 
 
 //        selectedEvent = (Event)intent.("selectedEvent");
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
 
 //        if(selectedEvent != null) {
 //

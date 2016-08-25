@@ -28,16 +28,16 @@
             android:scaleType="fitXY"
             />
 
-        <Button
-            android:id="@+id/detail_register_button"
-            android:layout_width="99dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="REGISTER"
-            android:background="@android:color/holo_green_light"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            />
+        <!--<Button-->
+            <!--android:id="@+id/detail_register_button"-->
+            <!--android:layout_width="99dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|right"-->
+            <!--android:text="REGISTER"-->
+            <!--android:background="@android:color/holo_green_light"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="16sp"-->
+            <!--/>-->
 
     </FrameLayout>
 
@@ -95,14 +95,50 @@
             />
 
         <TextView
-            android:id="@+id/detail_where"
+            android:id="@+id/detail_add1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="location"
+            android:text="add1"
             android:layout_marginLeft="8dp"
             android:textColor="@android:color/white"
-
             />
+
+        <!--<TextView-->
+            <!--android:id="@+id/detail_add2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="add2"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/detail_city"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="city"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--/>-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CATEGORY"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/holo_red_light"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/detail_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:layout_marginLeft="8dp"
+            android:textColor="@android:color/white"
+            />
+
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floating_action_menu"
