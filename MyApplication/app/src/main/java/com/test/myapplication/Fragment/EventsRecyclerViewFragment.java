@@ -367,7 +367,6 @@ public class EventsRecyclerViewFragment extends Fragment
             public void onFailure(Call<FreeEventsObject> call, Throwable t) {
             }
         });
-
     }
 
     public void loadFoodAndDrinkEvents(String latitude, String longitude) {
