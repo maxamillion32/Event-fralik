@@ -27,9 +27,9 @@ public class DetailActivity extends AppCompatActivity {
     private TextView textViewDescription;
     private TextView textViewWhen;
     private TextView textViewAdd1;
-//    private TextView textViewAdd2;
-//    private TextView textViewCity;
     private TextView textViewCategory;
+
+    
 
 
     @Override

@@ -66,6 +66,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 //                }
 //            });
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
