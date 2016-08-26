@@ -146,7 +146,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
             Event event = allEventsdataList.get(position);
 
             textViewTitle.setText(event.getName().getText());
-            textViewVenue.setText(event.getVenue().getName());
+            textViewVenue.setText(event.getVenue().getAddress().getAddress1());
 
             if (event.getLogo()!=null) {
                 Picasso.with(context).load(event.getLogo().getUrl()).into(imageView);

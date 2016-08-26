@@ -37,4 +37,5 @@
     <string name="event_type_air_boat"><![CDATA[Air & Boat]]></string>
     <string name="event_type_health">Health</string>
     <string name="event_type_arts"><![CDATA[Performing & Visual Arts]]></string>
+    <string name="key_event_url">url</string>
 </resources>
