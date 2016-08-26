@@ -136,6 +136,10 @@ public class DetailActivity extends AppCompatActivity {
 //        textViewCity.setText(intent.getStringExtra(getString(R.string.key_event_city)));
         textViewCategory.setText(intent.getStringExtra(getString(R.string.key_event_category)));
 
+        YoYo.with(Techniques.RollIn)
+                .duration(600)
+                .playOn(findViewById(R.id.detail_image));
+
         Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
 
         fab1.setOnClickListener(new View.OnClickListener() {

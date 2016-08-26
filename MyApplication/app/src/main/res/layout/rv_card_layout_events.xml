@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="310dp"
     android:layout_margin="10dp"
+    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardElevation="40sp"
+    card_view:cardCornerRadius="5dp"
     >
 
     <!--android:backgroundTint="@android:color/holo_green_light"-->
@@ -51,6 +53,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="3dp"
                 />
+
 
         </RelativeLayout>
 
