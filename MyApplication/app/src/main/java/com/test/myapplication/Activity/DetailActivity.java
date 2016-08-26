@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.R;
@@ -35,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_detail);
+
 
         Log.i(TAG, "onCreate: detail activity created !!!!!!!");
 

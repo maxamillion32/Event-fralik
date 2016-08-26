@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.R;
@@ -29,7 +31,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
     private Context context;
 
 
-    private static OnRecyclerViewItemClickListener onItemClickListener;
+    private OnRecyclerViewItemClickListener onItemClickListener;
 
     public interface OnRecyclerViewItemClickListener {
         void onItemClick(int position);
@@ -38,7 +40,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView textViewTitle;
@@ -49,6 +51,7 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 
         public ViewHolder(View itemView) {
             super(itemView);
+
 
             imageView = (ImageView) itemView.findViewById(R.id.card_layout_event_image);
             textViewTitle = (TextView) itemView.findViewById(R.id.card_layout_event_title);
@@ -137,8 +140,6 @@ public class CustomRecyclerViewAdapterEvents extends RecyclerView.Adapter<Custom
 //        imageView.setImageResource(R.drawable.dog);
 //        textViewTitle.setText("EVENT TITLE");
 //        textViewDate.setText("AUG 26, 2016");
-
-        //TODO: get the data from the arrayList and set the views (textView, imageView) with the data received
 
         if(allEventsdataList.size()>0) {
             Event event = allEventsdataList.get(position);

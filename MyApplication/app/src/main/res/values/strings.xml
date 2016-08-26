@@ -27,4 +27,14 @@
     <string name="key_location_services_latitude">latitude</string>
     <string name="key_location_services_longitude">longitude</string>
     <string name="toast_login_successful">"Logged in as: "</string>
+    <string name="event_type_all_events">EVENTS</string>
+    <string name="event_type_music">MUSIC</string>
+    <string name="event_type_food_drink"><![CDATA[Food & Drink]]></string>
+    <string name="event_type_entertainment">Entertainment</string>
+    <string name="event_type_outdoor">Outdoor</string>
+    <string name="event_type_sports">Sports</string>
+    <string name="event_type_hobbies">Hobbies</string>
+    <string name="event_type_air_boat"><![CDATA[Air & Boat]]></string>
+    <string name="event_type_health">Health</string>
+    <string name="event_type_arts"><![CDATA[Performing & Visual Arts]]></string>
 </resources>

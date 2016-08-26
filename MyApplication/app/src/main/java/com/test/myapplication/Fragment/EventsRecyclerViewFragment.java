@@ -13,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.test.myapplication.MainActivity;
 import com.test.myapplication.OnEventSelectedListener;
 import com.test.myapplication.RvAdapter.CustomRecyclerViewAdapterEvents;
 import com.test.myapplication.APIService.EventBriteAPIService;
@@ -24,8 +22,6 @@ import com.test.myapplication.Models.FreeEventsModel.FreeEventsObject;
 import com.test.myapplication.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,9 +40,11 @@ public class EventsRecyclerViewFragment extends Fragment
 
     public static String TAG="EventsRvFragment";
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String KEY_ARG_PAGE = "KEY_ARG_PAGE";
+    public static final String KEY_EVENT_TYPE = "KEY_EVENT_TYPE";
     private String title;
     private int page;
+    private String eventType;
 
     private RecyclerView recyclerView;
     private CustomRecyclerViewAdapterEvents rvAdapter;
@@ -60,19 +58,20 @@ public class EventsRecyclerViewFragment extends Fragment
 
     public String latitude, longitude;
 
-    private Button buttonNearMe;
-    private Button buttonAllEvents;
+//    private Button buttonNearMe;
+//    private Button buttonAllEvents;
 
 
 
-    public static EventsRecyclerViewFragment newInstance(int page) {
+    public static EventsRecyclerViewFragment newInstance(int page, String eventType) {
 
         EventsRecyclerViewFragment eventsFragment = new EventsRecyclerViewFragment();
 
         Log.i(TAG, "newInstance of events fragment created");
         
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_PAGE,page);
+        bundle.putInt(KEY_ARG_PAGE,page);
+        bundle.putString(KEY_EVENT_TYPE,eventType);
         eventsFragment.setArguments(bundle);
 
         return eventsFragment;
@@ -85,9 +84,10 @@ public class EventsRecyclerViewFragment extends Fragment
 
         Log.i(TAG, "onCreate: ");
 
+        page = getArguments().getInt(KEY_ARG_PAGE);
+        eventType = getArguments().getString(KEY_EVENT_TYPE);
+
         allEventsdataList = new ArrayList<>();
-
-
 
     }
 
@@ -102,24 +102,16 @@ public class EventsRecyclerViewFragment extends Fragment
         recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_event_recycler_view);
 
 //        rvLayoutManager = new GridLayoutManager(getActivity(),2);
-//        rvLayoutManager = new StaggeredGridLayoutManager()
+
         rvLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(rvLayoutManager);
 
-        buttonNearMe = (Button) rootView.findViewById(R.id.fragment_events_button_nearby_events);
-        buttonAllEvents = (Button) rootView.findViewById(R.id.fragment_events_button_all_events);
-
+//        buttonNearMe = (Button) rootView.findViewById(R.id.fragment_events_button_nearby_events);
+//        buttonAllEvents = (Button) rootView.findViewById(R.id.fragment_events_button_all_events);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         latitude = sharedPreferences.getString(getString(R.string.key_location_services_latitude),null);
         longitude = sharedPreferences.getString(getString(R.string.key_location_services_longitude),null);
-
-
-
-
-        Log.i(TAG, "onCreateView: calling loadfreeEvents() ");
-
-
 
         Log.i(TAG, "onCreateView: lat long is = "+latitude+" , "+longitude);
 
@@ -158,7 +150,81 @@ public class EventsRecyclerViewFragment extends Fragment
 //            Log.i(TAG, "onCreateView: lat long not null");
 //            Log.i(TAG, "onCreateView: calling neabyevents method");
 
+        if( eventType.equals(getString(R.string.event_type_all_events))) {
+
+            Log.i(TAG, "onCreateView: EVENT");
+
+            Log.i(TAG, "onCreateView: event type is = "+eventType);
+
             loadAllNearbyEvents(latitude,longitude);
+//            loadMusicEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_music))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadMusicEvents(latitude,longitude);
+
+        }  else if (eventType.equals(getString(R.string.event_type_food_drink))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadFoodAndDrinkEvents(latitude,longitude);
+
+        }  else if (eventType.equals(getString(R.string.event_type_outdoor))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadOutdoorEvents(latitude,longitude);
+
+        }  else if (eventType.equals(getString(R.string.event_type_entertainment))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadEntertainmentEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_hobbies))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadHobbiesEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_air_boat))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadAirBoatEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_arts))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadArtsEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_sports))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadSportsFitnessEvents(latitude,longitude);
+
+        } else if (eventType.equals(getString(R.string.event_type_health))) {
+            Log.i(TAG, "onCreateView: MUSIC ");
+
+            Log.i(TAG, "onCreateView: event type is "+eventType);
+
+            loadHealthEvents(latitude,longitude);
+
+        }
+
+
 
 //        } else {
 //
@@ -192,6 +258,15 @@ public class EventsRecyclerViewFragment extends Fragment
 
     @Override
     public void onItemClick(int position) {
+        
+        
+
+
+
+//        YoYo.with(Techniques.Tada)
+//                .duration(700)
+//                .playOn(findViewById(R.id.edit_area));
+
 
         Log.i(TAG, "onItemClick: position is "+position);
 
@@ -201,7 +276,12 @@ public class EventsRecyclerViewFragment extends Fragment
             
             selectedEvent = allEventsdataList.get(position);
 
+            Log.i(TAG, "onItemClick: eventType = "+eventType);
+            
+
             Log.i(TAG, "onItemClick: selected event name is = "+selectedEvent.getName().getText());
+
+            Log.i(TAG, "onItemClick: position = "+ position);
 
             onEventSelectedListener.onEventSelected(selectedEvent);
 
@@ -241,8 +321,6 @@ public class EventsRecyclerViewFragment extends Fragment
 
                     allEventsdataList.addAll(freeEventsObject.getEvents());
 
-                    FreeEventsObject obj = new FreeEventsObject();
-
                     Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageSize());
                     Log.i(TAG, "onResponse: page size = "+response.body().getPagination().getPageNumber());
 
@@ -263,6 +341,362 @@ public class EventsRecyclerViewFragment extends Fragment
 
                 Log.i(TAG, "onFailure: ");
 
+            }
+        });
+
+    }
+
+    public void loadMusicEvents(String latitude, String longitude) {
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("103","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public void loadArtsEvents(String latitude, String longitude) {
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("105","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public void loadHobbiesEvents(String latitude, String longitude) {
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("119","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public void loadAirBoatEvents(String latitude, String longitude) {
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("118","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public void loadHealthEvents(String latitude, String longitude) {
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("107","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public void loadFoodAndDrinkEvents(String latitude, String longitude) {
+
+        Log.i(TAG, "loadMusicEvents: ");
+
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("110","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+                    Log.i(TAG, "onResponse: ");
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    Log.i(TAG, "onResponse: response = "+freeEventsObject.getPagination() );
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    Log.i(TAG, "onResponse: data = "+allEventsdataList );
+                    Log.i(TAG, "onResponse: data size = "+allEventsdataList.size() );
+
+                    Log.i(TAG, "onResponse: cat ID = "+allEventsdataList.get(2).getCategoryId());
+
+                    Log.i(TAG, "onResponse: cat = "+allEventsdataList.get(2).getCategory().getName());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+                Log.i(TAG, "onFailure: ");
+            }
+        });
+
+    }
+
+    public void loadEntertainmentEvents(String latitude, String longitude) {
+
+        Log.i(TAG, "loadMusicEvents: ");
+
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("104","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+                    Log.i(TAG, "onResponse: ");
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    Log.i(TAG, "onResponse: response = "+freeEventsObject.getPagination() );
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    Log.i(TAG, "onResponse: data = "+allEventsdataList );
+                    Log.i(TAG, "onResponse: data size = "+allEventsdataList.size() );
+
+                    Log.i(TAG, "onResponse: cat ID = "+allEventsdataList.get(2).getCategoryId());
+
+                    Log.i(TAG, "onResponse: cat = "+allEventsdataList.get(2).getCategory().getName());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+                Log.i(TAG, "onFailure: ");
+            }
+        });
+
+    }
+
+    public void loadOutdoorEvents(String latitude, String longitude) {
+
+        Log.i(TAG, "loadMusicEvents: ");
+
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("109","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+                    Log.i(TAG, "onResponse: ");
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    Log.i(TAG, "onResponse: response = "+freeEventsObject.getPagination() );
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    Log.i(TAG, "onResponse: data = "+allEventsdataList );
+                    Log.i(TAG, "onResponse: data size = "+allEventsdataList.size() );
+
+                    Log.i(TAG, "onResponse: cat ID = "+allEventsdataList.get(2).getCategoryId());
+
+                    Log.i(TAG, "onResponse: cat = "+allEventsdataList.get(2).getCategory().getName());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+                Log.i(TAG, "onFailure: ");
+            }
+        });
+
+    }
+
+    public void loadSportsFitnessEvents(String latitude, String longitude) {
+
+        Log.i(TAG, "loadMusicEvents: ");
+
+        String BASE_URL_FREE_EVENTS = "https://www.eventbriteapi.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL_FREE_EVENTS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final EventBriteAPIService request = retrofit.create(EventBriteAPIService.class);
+
+        Call<FreeEventsObject> callMusic = request.getCategoryEvents("108","20mi",latitude,longitude,"Bearer "+API_KEY_EVENT_BRITE);
+
+        callMusic.enqueue(new Callback<FreeEventsObject>() {
+            @Override
+            public void onResponse(Call<FreeEventsObject> call, Response<FreeEventsObject> response) {
+                try {
+                    Log.i(TAG, "onResponse: ");
+
+                    FreeEventsObject freeEventsObject = response.body();
+
+                    Log.i(TAG, "onResponse: response = "+freeEventsObject.getPagination() );
+
+                    allEventsdataList.addAll(freeEventsObject.getEvents());
+
+                    Log.i(TAG, "onResponse: data = "+allEventsdataList );
+                    Log.i(TAG, "onResponse: data size = "+allEventsdataList.size() );
+
+                    Log.i(TAG, "onResponse: cat ID = "+allEventsdataList.get(2).getCategoryId());
+
+                    Log.i(TAG, "onResponse: cat = "+allEventsdataList.get(2).getCategory().getName());
+
+                    rvAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<FreeEventsObject> call, Throwable t) {
+                Log.i(TAG, "onFailure: ");
             }
         });
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.test.myapplication.R;
@@ -15,9 +16,11 @@ import com.test.myapplication.R;
  */
 public class FirstFragment extends Fragment {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String ARG_PAGE = "KEY_ARG_PAGE";
     private String title;
     private int page;
+
+    Button button;
 
     public static FirstFragment newInstance(int page) {
 
@@ -45,6 +48,9 @@ public class FirstFragment extends Fragment {
         View view = inflater.inflate(R.layout.frag_first, container, false);
         TextView tvLabel = (TextView) view.findViewById(R.id.txtv);
         tvLabel.setText("Fragment "+page);
+
+        button = (Button) view.findViewById(R.id.button);
+
         return view;
 
     }

@@ -111,6 +111,17 @@ public interface EventBriteAPIService {
 //            @Query("q") String searchQuery, @Header("Ocp-Apim-Subscription-Key") String apiKey);
 //
 
+//    https://www.eventbriteapi.com/v3/events/search/?expand=venue,category,ticket_classes&location.within=20mi&location.latitude=37.7908693&location.longitude=-122.4011095&categories=103&token=AMDMMKWPWFPOCAUYVIW2
 
+    @GET("/v3/events/search/?expand=venue,category,ticket_classes")
+    Call<FreeEventsObject> getCategoryEvents(
+            @Query("categories") String categories,
+            @Query("location.within") String within,
+            @Query("location.latitude") String lat,
+            @Query("location.longitude") String longi,
+            @Header("Authorization") String token
+
+
+    );
 
 }

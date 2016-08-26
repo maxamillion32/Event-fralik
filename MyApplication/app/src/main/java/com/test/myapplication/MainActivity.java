@@ -256,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onEventSelected(Event selectedEvent) {
 
+//        android.R.style.Theme_Holo_Dialog_NoActionBar
+
         Log.i(TAG, "onEventSelected: ");
 
         Log.i(TAG, "onEventSelected: description is "+selectedEvent.getDescription().getText());
@@ -266,10 +268,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         
         intent.putExtra(getString(R.string.key_event_description),selectedEvent.getDescription().getText());
         intent.putExtra(getString(R.string.key_event_title),selectedEvent.getName().getText());
-//        intent.putExtra("address1",selectedEvent.getVenue().getAddress().getAddress1());
         intent.putExtra(getString(R.string.key_event_city),selectedEvent.getVenue().getAddress().getCity());
         intent.putExtra(getString(R.string.key_event_time_date),selectedEvent.getStart().getLocal());
-        intent.putExtra(getString(R.string.key_event_category),selectedEvent.getCategory().getName());
+
+        if(selectedEvent.getCategory().getShortNameLocalized() != null ) {
+            intent.putExtra(getString(R.string.key_event_category), selectedEvent.getCategory().getShortNameLocalized());
+        }
         intent.putExtra(getString(R.string.key_event_price),selectedEvent.getTicketClasses().getClass());
         intent.putExtra(getString(R.string.key_event_full_address),selectedEvent.getVenue().getAddress().getLocalizedAddressDisplay());
 
@@ -279,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 //        intent.putExtra("selectedEvent",selectedEvent);
         startActivity(intent);
-
 
     }
 
@@ -430,9 +433,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
         // region pager setup
-        private  int TAB_COUNT = 5;
+        private  int TAB_COUNT = 10;
 
-        private String tabTitles[] = new String[] { "EVENTS", "CATEGORIES", "Tab3", "Tab4", "Tab5" };
+        private String tabTitles[] = new String[] {
+                getString(R.string.event_type_all_events),
+                getString(R.string.event_type_music),
+                getString(R.string.event_type_food_drink),
+                getString(R.string.event_type_entertainment),
+                getString(R.string.event_type_outdoor),
+                getString(R.string.event_type_sports),
+                getString(R.string.event_type_hobbies),
+                getString(R.string.event_type_air_boat),
+                getString(R.string.event_type_health),
+                getString(R.string.event_type_arts)
+        };
+
         private Context context;
 
         public MyPagerAdapter(FragmentManager fm, Context context) {
@@ -458,20 +473,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //                    Log.i(TAG, "getItem: loadFreeEvents call completed");
 
-                    return EventsRecyclerViewFragment.newInstance(position);
+                    return EventsRecyclerViewFragment.newInstance(position,getString(R.string.event_type_all_events));
 
                 // region case 1,2,3
                 case 1:
-                    return FirstFragment.newInstance(position+1);
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_music));
 
                 case 2:
-                    return FirstFragment.newInstance(position+1);
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_food_drink));
 
                 case 3:
-                    return FirstFragment.newInstance(position+1);
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_entertainment));
 
                 case 4:
-                    return FirstFragment.newInstance(position+1);
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_outdoor));
+
+                case 5:
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_sports));
+
+                case 6:
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_hobbies));
+
+                case 7:
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_air_boat));
+
+                case 8:
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_health));
+
+                case 9:
+                    return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_arts));
 
                 //endregion
 

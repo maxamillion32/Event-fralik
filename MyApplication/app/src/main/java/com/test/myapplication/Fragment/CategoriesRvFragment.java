@@ -15,7 +15,6 @@ import com.test.myapplication.RvAdapter.CustomRecyclerViewAdapterEvents;
  */
 public class CategoriesRvFragment extends Fragment {
 
-
     private RecyclerView recyclerView;
     private CustomRecyclerViewAdapterEvents rvAdapter;
 
