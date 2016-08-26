@@ -77,15 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentPagerAdapter adapterViewPager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-//
-//    FragmentManager fragmentManager;
-//    FragmentTransaction fragmentTransaction;
-//
-
-
     CallbackManager callbackManager;
-
-    LoginButton loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupViewPagerAndTabs();
 
         facebookInitialization();
-
-        //facebookLogin();
-
 
     }
 
@@ -256,17 +245,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onEventSelected(Event selectedEvent) {
 
-//        android.R.style.Theme_Holo_Dialog_NoActionBar
-
-        Log.i(TAG, "onEventSelected: ");
-
-        Log.i(TAG, "onEventSelected: description is "+selectedEvent.getDescription().getText());
-        Log.i(TAG, "onEventSelected: title is "+selectedEvent.getName().getText());
-
         Intent intent = new Intent(this, DetailActivity.class);
-        Log.i(TAG, "onEventSelected: new intent made");
-        
+
         intent.putExtra(getString(R.string.key_event_description),selectedEvent.getDescription().getText());
+        intent.putExtra(getString(R.string.description_html),selectedEvent.getDescription().getHtml());
         intent.putExtra(getString(R.string.key_event_title),selectedEvent.getName().getText());
         intent.putExtra(getString(R.string.key_event_city),selectedEvent.getVenue().getAddress().getCity());
         intent.putExtra(getString(R.string.key_event_time_date),selectedEvent.getStart().getLocal());
@@ -279,12 +261,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(getString(R.string.key_event_full_address),selectedEvent.getVenue().getAddress().getLocalizedAddressDisplay());
         intent.putExtra(getString(R.string.key_event_url),selectedEvent.getUrl());
 
-
-
         if(selectedEvent.getLogo() != null) {
             intent.putExtra(getString(R.string.key_event_image), selectedEvent.getLogo().getUrl());
         }
-//        intent.putExtra("selectedEvent",selectedEvent);
         startActivity(intent);
 
     }
@@ -384,37 +363,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     //endregion
 
-    //region facebook login
-//    private void facebookLogin() {
-//
-//        loginButton = (LoginButton) findViewById(R.id.login_button);
-//
-//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//
-//                loginButton.setVisibility(View.GONE);
-//
-//                tabLayout.setVisibility(View.VISIBLE);
-//                viewPager.setVisibility(View.VISIBLE);
-//
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//
-//            }
-//        });
-//
-//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-//
-//    }
-    // endregion
 
     //region VIEW PAGER CODE
 
@@ -426,12 +374,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         viewPager.setAdapter(adapterViewPager);
 
-//        viewPager.setVisibility(View.INVISIBLE);
-
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-//        tabLayout.setVisibility(View.INVISIBLE);
 
     }
 
@@ -471,19 +415,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public Fragment getItem(int position) {
-//            return FirstFragment.newInstance(position + 1);
 
             switch (position) {
 
                 case 0:
-
-                    Log.i(TAG, "getItem: switch case0");
-
-//                    Log.i(TAG, "getItem: loadFreeEvents call completed");
-
                     return EventsRecyclerViewFragment.newInstance(position,getString(R.string.event_type_all_events));
 
-                // region case 1,2,3
                 case 1:
                     return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_music));
 
@@ -511,8 +448,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case 9:
                     return EventsRecyclerViewFragment.newInstance(position+1,getString(R.string.event_type_arts));
 
-                //endregion
-
             }
 
             return null;
@@ -520,7 +455,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public CharSequence getPageTitle(int position) {
-//            return super.getPageTitle(position);
             return tabTitles[position];
         }
     }

@@ -49,27 +49,17 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.fragment_login);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(getApplication(),"1813279535570044");
 
         callbackManager = CallbackManager.Factory.create();
-
         loginButton = (LoginButton) findViewById(R.id.login_button);
-
-//        loginButton.setFragment(LoginActivity.this);
-
-        textViewName = (TextView) findViewById(R.id.fb_name);
-        textViewEmail = (TextView) findViewById(R.id.fb_email);
-
-//        loginButton.setFragment(this);
+//        textViewName = (TextView) findViewById(R.id.fb_name);
+//        textViewEmail = (TextView) findViewById(R.id.fb_email);
 
         loginButton.setReadPermissions(Arrays.asList("public_profile","email"));
-
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-//                textViewName.setText(loginResult.getAccessToken().getUserId());
 
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -78,16 +68,8 @@ public class LoginActivity extends FragmentActivity {
 
                                 try {
 
-//                                    Log.i(TAG, "onCompleted: "+response.getError().getErrorCode());
-//                                    Log.i(TAG, "onCompleted: "+ response.getError().getErrorMessage());
-
                                     email = object.getString("email");
-//                                    firstName = object.getString("firstName");
-//                                    lastName = object.getString("lastName");
                                     name = object.getString("name");
-//                                    id = object.getString("id");
-//                                    textViewName.setText(name);
-//                                    textViewEmail.setText(email);
 
                                     Toast.makeText(LoginActivity.this, getString(R.string.toast_login_successful)+ email, Toast.LENGTH_SHORT).show();
 
