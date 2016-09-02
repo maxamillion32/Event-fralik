@@ -2,9 +2,11 @@ package com.test.myapplication.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -150,8 +152,23 @@ public class DetailActivity extends AppCompatActivity {
     public void setViews(Intent intent) {
 
         textViewTitle.setText(intent.getStringExtra(getString(R.string.key_event_title)));
-        textViewDescription.setText(intent.getStringExtra(getString(R.string.key_event_description)));
+//        textViewDescription.setText(intent.getStringExtra(getString(R.string.key_event_description)));
+//        think u need to add Html.fromHtml(String) in your first line  like this ... Description.setText(Html.fromHtml(htmlString)
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//
+//            textViewDescription.setText(Html.fromHtml(getString(R.string.description_html),Html.FROM_HTML_MODE_LEGACY));
+//
+//        } else {
+//            textViewDescription.setText(Html.fromHtml(getString(R.string.description_html)));
+//
+//        }
+
+//        textViewDescription.setText(Html.fromHtml(getString(R.string.description_html),Html.FROM_HTML_MODE_LEGACY));
+//        textViewDescription.setText(intent.getStringExtra(getString(R.string.description_html)));
         textViewDescription.setMovementMethod(LinkMovementMethod.getInstance());
+
         textViewWhen.setText(intent.getStringExtra(getString(R.string.key_event_time_date)));
         textViewAdd1.setText(intent.getStringExtra(getString(R.string.key_event_full_address)));
         textViewCategory.setText(intent.getStringExtra(getString(R.string.key_event_category)));
