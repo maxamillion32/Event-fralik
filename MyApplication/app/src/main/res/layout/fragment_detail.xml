@@ -5,8 +5,9 @@
     style="@style/Base.Theme.AppCompat.Dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/uber_black"
+    android:background="@color/uber_white"
     >
+    <!--android:background="@color/uber_black"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,11 +17,13 @@
 
         <ImageView
             android:id="@+id/detail_image"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
             android:src="@drawable/dog"
             android:scaleType="fitXY"
+            android:elevation="30sp"
             />
 
         <TextView
@@ -28,10 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TITLE"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
             android:textSize="22dp"
             android:layout_margin="8dp"
+
             />
 
         <TextView
@@ -40,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="The Golden Retriever is a large-sized breed of dog bred as gun dogs to retrieve shot waterfowl such as ducks and upland game birds during hunting and shooting parties, and were named 'retriever' because of their ability to retrieve shot game undamaged. Golden Retrievers have an instinctive love of water, and are easy to train to basic or advanced obedience standards. "
             android:layout_margin="8dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             />
 
         <TextView
@@ -48,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="WHEN"
             android:layout_margin="8dp"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
             />
 
@@ -58,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="date and time"
             android:layout_marginLeft="8dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             />
 
         <TextView
@@ -66,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="WHERE"
             android:layout_margin="8dp"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
             />
 
@@ -76,7 +80,7 @@
             android:layout_height="wrap_content"
             android:text="add1"
             android:layout_marginLeft="8dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             />
 
         <TextView
@@ -84,7 +88,7 @@
             android:layout_height="wrap_content"
             android:text="CATEGORY"
             android:layout_margin="8dp"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
             />
 
@@ -94,8 +98,25 @@
             android:layout_height="wrap_content"
             android:text="Category"
             android:layout_marginLeft="8dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LOCATION"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/holo_blue_light"
+            android:textStyle="bold"
+            />
+
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+
+        <fragment
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
 
         <com.github.clans.fab.FloatingActionMenu
@@ -107,8 +128,6 @@
             app:menu_animationDelayPerItem="55"
             app:menu_backgroundColor="@android:color/transparent"
             app:menu_buttonSpacing="0dp"
-            app:menu_colorNormal="#da3c2f"
-            app:menu_colorPressed="#dc4b3f"
             app:menu_colorRipple="#99d4d4d4"
             app:menu_fab_size="normal"
             app:menu_icon="@drawable/ic_menu_share"
@@ -120,7 +139,7 @@
             app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
             app:menu_labels_margin="0dp"
             app:menu_labels_maxLines="-1"
-            app:menu_labels_padding="8dp"
+            app:menu_labels_padding="1dp"
             app:menu_labels_position="left"
             app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
             app:menu_labels_showShadow="true"

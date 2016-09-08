@@ -1,10 +1,15 @@
 package com.test.myapplication.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -24,6 +29,12 @@ import com.facebook.share.widget.ShareDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.identity.intents.AddressConstants;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.R;
@@ -31,7 +42,7 @@ import com.test.myapplication.R;
 /**
  * Created by NehaRege on 8/22/16.
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG="DetailActivity";
 
@@ -49,25 +60,35 @@ public class DetailActivity extends AppCompatActivity {
     ShareDialog shareDialog;
     MessageDialog messageDialog;
 
+    public String latitude, longitude;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE
-
-        );
+//        this.getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE
+//
+//
+//        );
 
         setContentView(R.layout.fragment_detail);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        latitude = sharedPreferences.getString(getString(R.string.key_location_services_latitude),null);
+        longitude = sharedPreferences.getString(getString(R.string.key_location_services_longitude),null);
 
         initializeFacebookStuff();
 
         initializeViews();
+
+        initializeMapFragment();
 
         final Intent intent = getIntent();
 
@@ -124,6 +145,61 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+//        String text = "12.34"; // example String
+//        double value = Double.parseDouble(text);
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude)))
+                .title("Marker")
+        );
+
+
+
+//        @Override
+//        public void onMapReady(GoogleMap map) {
+//            map.addMarker(new MarkerOptions()
+//                    .position(new LatLng(0, 0))
+//                    .title("Marker"));
+//        }
+    }
+
+    public void initializeMapFragment() {
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+//        SupportMapFragment fragmentManager = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+//
+//        GoogleMap map= fragmentManager.getMap()
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.rootFrame, map);
+//        fragmentTransaction.commit();
+
+//        SupportMapFragment mapFragment =
+//                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+
+//        FragmentManager fm = getChildFragmentManager();
+//        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
+//        fm.beginTransaction().replace(R.id.mapContainer, supportMapFragment).commit();
+
+
+
+
+//        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//        supportMapFragment.getMapAsync(DetailActivity.this);
+
+//        mMapFragment = MapFragment.newInstance();
+//        FragmentTransaction fragmentTransaction =
+//                getFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.my_container, mMapFragment);
+//        fragmentTransaction.commit();
+    }
+
 
     public void initializeViews() {
 
@@ -153,19 +229,53 @@ public class DetailActivity extends AppCompatActivity {
 
         textViewTitle.setText(intent.getStringExtra(getString(R.string.key_event_title)));
 //        textViewDescription.setText(intent.getStringExtra(getString(R.string.key_event_description)));
-//        think u need to add Html.fromHtml(String) in your first line  like this ... Description.setText(Html.fromHtml(htmlString)
+
+//        final  String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg";
 
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//        final String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg";
 //
-//            textViewDescription.setText(Html.fromHtml(getString(R.string.description_html),Html.FROM_HTML_MODE_LEGACY));
+//        ImageGetter imageGetter = new ImageGetter() {
+//            public Drawable getDrawable(String source) {
+//                Drawable d = Drawable.createFromPath(path);
+//                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+//                return d;
+//            }
+//        };
 //
-//        } else {
-//            textViewDescription.setText(Html.fromHtml(getString(R.string.description_html)));
-//
-//        }
+//        Spanned htmlstr= Html.fromHtml("<img src='" + path + "'/>", imageGetter, null);
+//        TextView out_unit1 = (TextView) findViewById(R.id.mTxtViewCm2);
+//        out_unit1.setText(htmlstr);
 
-//        textViewDescription.setText(Html.fromHtml(getString(R.string.description_html),Html.FROM_HTML_MODE_LEGACY));
+
+
+//        txtimg.setText(Html.fromHtml(htmlstr, new ImageGetter() {
+//            @Override
+//            public Drawable getDrawable(String source) {
+//                String path =  source;
+//
+//                Drawable bmp = Drawable.createFromPath(path);
+//                bmp.setBounds(0, 0, bmp.getIntrinsicWidth(), bmp.getIntrinsicHeight());
+//
+//                return bmp;
+//            }
+//        }, null));
+
+//        textViewDescription.setText(Html.fromHtml(intent.getStringExtra(getString(R.string.description_html)),
+//                new Html.ImageGetter() {
+//                    @Override
+//                    public Drawable getDrawable(String s) {
+//                        String path = s;
+//
+//                        Drawable bmp = Drawable.createFromPath(path);
+//                        bmp.setBounds(0,0,bmp.getIntrinsicWidth(),bmp.getIntrinsicHeight());
+//
+//                        return bmp;
+//                    }
+//                },
+//        null));
+
+        textViewDescription.setText(Html.fromHtml(intent.getStringExtra(getString(R.string.description_html))));
 //        textViewDescription.setText(intent.getStringExtra(getString(R.string.description_html)));
         textViewDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -180,7 +290,5 @@ public class DetailActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
 
     }
-
-
 
 }

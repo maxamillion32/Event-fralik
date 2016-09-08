@@ -253,6 +253,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(getString(R.string.key_event_city),selectedEvent.getVenue().getAddress().getCity());
         intent.putExtra(getString(R.string.key_event_time_date),selectedEvent.getStart().getLocal());
 
+
+
         if(selectedEvent.getCategory().getShortNameLocalized() != null ) {
             intent.putExtra(getString(R.string.key_event_category), selectedEvent.getCategory().getShortNameLocalized());
         }
