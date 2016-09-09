@@ -9,6 +9,7 @@
     >
     <!--android:background="@color/uber_black"-->
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,14 +22,24 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:src="@drawable/dog"
+            android:src="@drawable/no_img"
             android:scaleType="fitXY"
             android:elevation="30sp"
             />
 
+        <Button
+            android:id="@+id/detail_button_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="268dp"
+            android:layout_marginEnd="3dp"
+            android:text="REGISTER"
+            android:elevation="30sp"
+
+            />
         <TextView
             android:id="@+id/detail_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TITLE"
             android:textColor="@android:color/holo_blue_light"
@@ -109,15 +120,37 @@
             android:textStyle="bold"
             />
 
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-
-        <fragment
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
 
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <!--<com.google.android.gms.maps.MapView-->
+                <!--xmlns:map="http://schemas.android.com/apk/res-auto"-->
+                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--android:id="@+id/detail_map"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="400dp"-->
+                <!--map:cameraBearing="112.5"-->
+                <!--map:cameraTargetLat="-33.796923"-->
+                <!--map:cameraTargetLng="150.922433"-->
+                <!--map:cameraTilt="30"-->
+                <!--map:cameraZoom="13"-->
+                <!--map:mapType="normal"-->
+                <!--map:uiCompass="false"-->
+                <!--map:uiRotateGestures="true"-->
+                <!--map:uiScrollGestures="true"-->
+                <!--map:uiTiltGestures="true"-->
+                <!--map:uiZoomControls="false"-->
+                <!--map:uiZoomGestures="true"-->
+                <!--&gt;-->
+
+
+            <!--</com.google.android.gms.maps.MapView>-->
+
+
+        <!--</LinearLayout>-->
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floating_action_menu"
@@ -177,6 +210,14 @@
                 app:fab_size="mini" />
 
         </com.github.clans.fab.FloatingActionMenu>
+
+        <Button
+            android:id="@+id/detail_button_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SHOW MAP"
+            />
+
 
     </LinearLayout>
 

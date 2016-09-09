@@ -252,6 +252,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(getString(R.string.key_event_title),selectedEvent.getName().getText());
         intent.putExtra(getString(R.string.key_event_city),selectedEvent.getVenue().getAddress().getCity());
         intent.putExtra(getString(R.string.key_event_time_date),selectedEvent.getStart().getLocal());
+        intent.putExtra(getString(R.string.key_event_latitude),selectedEvent.getVenue().getAddress().getLatitude());
+        intent.putExtra(getString(R.string.key_event_longitude),selectedEvent.getVenue().getAddress().getLongitude());
+        intent.putExtra(getString(R.string.key_event_short_address),selectedEvent.getVenue().getAddress().getAddress1());
 
 
 

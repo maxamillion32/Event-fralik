@@ -2,21 +2,15 @@ package com.test.myapplication.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,21 +22,13 @@ import com.facebook.share.widget.MessageDialog;
 import com.facebook.share.widget.ShareDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.identity.intents.AddressConstants;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
-import com.test.myapplication.Models.FreeEventsModel.Event;
 import com.test.myapplication.R;
 
 /**
  * Created by NehaRege on 8/22/16.
  */
-public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG="DetailActivity";
 
@@ -56,11 +42,18 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private FloatingActionMenu fam;
     private FloatingActionButton fab1, fab2, fab3;
 
+    private Button locationButton;
+
+//    private MapView mMapView;
+
     CallbackManager callbackManager;
     ShareDialog shareDialog;
     MessageDialog messageDialog;
 
     public String latitude, longitude;
+    public String eventLatitude, eventLongitude;
+
+//    MapView mapView;
 
 
     @Override
@@ -78,19 +71,50 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 //
 //        );
 
-        setContentView(R.layout.fragment_detail);
+        setContentView(R.layout.activity_detail);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         latitude = sharedPreferences.getString(getString(R.string.key_location_services_latitude),null);
         longitude = sharedPreferences.getString(getString(R.string.key_location_services_longitude),null);
 
+
+
         initializeFacebookStuff();
 
         initializeViews();
+//
+//        mMapView = (MapView) findViewById(R.id.detail_map);
+//        mMapView.onCreate(savedInstanceState);
+//
+//        mMapView.getMapAsync(DetailActivity.this);
 
-        initializeMapFragment();
+//
+//        // Gets the MapView from the XML layout and creates it
+//        mapView = (MapView) v.findViewById(R.id.mapview);
+//        mapView.onCreate(savedInstanceState);
+//
+//        // Gets to GoogleMap from the MapView and does initialization stuff
+//        map = mapView.getMap();
+//        map.getUiSettings().setMyLocationButtonEnabled(false);
+//        map.setMyLocationEnabled(true);
+//
+//        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+//        try {
+//            MapsInitializer.initialize(this.getActivity());
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Updates the location and zoom of the MapView
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
+//        map.animateCamera(cameraUpdate);
+
+//        initializeMapFragment();
 
         final Intent intent = getIntent();
+
+        eventLatitude = intent.getStringExtra(getString(R.string.key_event_latitude));
+        eventLongitude = intent.getStringExtra(getString(R.string.key_event_longitude));
 
         setViews(intent);
 
@@ -143,62 +167,122 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent1 = new Intent(DetailActivity.this,LocationActivity.class);
+                intent1.putExtra(getString(R.string.key_event_latitude),eventLatitude);
+                intent1.putExtra(getString(R.string.key_event_longitude),eventLongitude);
+                intent1.putExtra(getString(R.string.key_event_short_address),
+                        intent.getStringExtra(getString(R.string.key_event_short_address)));
+                startActivity(intent1);
+
+
+            }
+        });
+
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-//        String text = "12.34"; // example String
-//        double value = Double.parseDouble(text);
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude)))
-                .title("Marker")
-        );
-
-
-
-//        @Override
-//        public void onMapReady(GoogleMap map) {
-//            map.addMarker(new MarkerOptions()
-//                    .position(new LatLng(0, 0))
-//                    .title("Marker"));
-//        }
-    }
-
-    public void initializeMapFragment() {
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-//        SupportMapFragment fragmentManager = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        mMapView.onResume();
+//    }
 //
-//        GoogleMap map= fragmentManager.getMap()
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.rootFrame, map);
-//        fragmentTransaction.commit();
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//
+////        String text = "12.34"; // example String
+////        double value = Double.parseDouble(text);
+//
+////        private LatLngBounds AUSTRALIA = new LatLngBounds(
+////                new LatLng(-44, 113), new LatLng(-10, 154));
+//
+//
+//
+//        LatLngBounds latLngBounds = new LatLngBounds(
+//                new LatLng(Double.parseDouble(eventLatitude),Double.parseDouble(eventLongitude)),
+//                new LatLng(Double.parseDouble(eventLatitude),Double.parseDouble(eventLongitude))
+//        );
+//
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(Double.parseDouble(eventLatitude),Double.parseDouble(eventLongitude)))
+//                .title("Marker")
+//        );
+//
+////        mMap.setLatLngBoundsForCameraTarget(ADELAIDE);
+//
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(),10));
+//
+////        googleMap.setLatLngBoundsForCameraTarget(latLngBounds);
+//
+//
+////        @Override
+////        public void onMapReady(GoogleMap map) {
+////            map.addMarker(new MarkerOptions()
+////                    .position(new LatLng(0, 0))
+////                    .title("Marker"));
+////        }
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        mMapView.onPause();
+//        super.onPause();
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        mMapView.onDestroy();
+//        super.onDestroy();
+//    }
+//
+//    @Override
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        mMapView.onLowMemory();
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        mMapView.onSaveInstanceState(outState);
+//    }
 
+//    public void initializeMapFragment() {
+//
 //        SupportMapFragment mapFragment =
 //                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
-
-//        FragmentManager fm = getChildFragmentManager();
-//        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
-//        fm.beginTransaction().replace(R.id.mapContainer, supportMapFragment).commit();
-
-
-
-
-//        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//        supportMapFragment.getMapAsync(DetailActivity.this);
-
-//        mMapFragment = MapFragment.newInstance();
-//        FragmentTransaction fragmentTransaction =
-//                getFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.my_container, mMapFragment);
-//        fragmentTransaction.commit();
-    }
+//
+////        SupportMapFragment fragmentManager = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+////
+////        GoogleMap map= fragmentManager.getMap()
+////        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+////        fragmentTransaction.add(R.id.rootFrame, map);
+////        fragmentTransaction.commit();
+//
+////        SupportMapFragment mapFragment =
+////                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+////        mapFragment.getMapAsync(this);
+//
+////        FragmentManager fm = getChildFragmentManager();
+////        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
+////        fm.beginTransaction().replace(R.id.mapContainer, supportMapFragment).commit();
+//
+//
+//
+//
+////        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+////        supportMapFragment.getMapAsync(DetailActivity.this);
+//
+////        mMapFragment = MapFragment.newInstance();
+////        FragmentTransaction fragmentTransaction =
+////                getFragmentManager().beginTransaction();
+////        fragmentTransaction.add(R.id.my_container, mMapFragment);
+////        fragmentTransaction.commit();
+//    }
 
 
     public void initializeViews() {
@@ -215,6 +299,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         fab2 = (FloatingActionButton) findViewById(R.id.floating_action_menu_item2_fb);
         fab3 = (FloatingActionButton) findViewById(R.id.floating_action_menu_item3_messenger);
 
+        locationButton = (Button) findViewById(R.id.detail_button_location);
+
     }
 
     public void initializeFacebookStuff() {
@@ -228,6 +314,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     public void setViews(Intent intent) {
 
         textViewTitle.setText(intent.getStringExtra(getString(R.string.key_event_title)));
+
 //        textViewDescription.setText(intent.getStringExtra(getString(R.string.key_event_description)));
 
 //        final  String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/test.jpg";

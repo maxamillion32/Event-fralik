@@ -39,4 +39,7 @@
     <string name="event_type_arts"><![CDATA[Performing & Visual Arts]]></string>
     <string name="key_event_url">url</string>
     <string name="description_html">descriptionHTML</string>
+    <string name="key_event_latitude">EventLat</string>
+    <string name="key_event_longitude">EventLongi</string>
+    <string name="key_event_short_address">EventShortAddress</string>
 </resources>
