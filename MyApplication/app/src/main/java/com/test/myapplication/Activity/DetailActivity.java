@@ -374,7 +374,14 @@ public class DetailActivity extends AppCompatActivity {
                 .duration(600)
                 .playOn(findViewById(R.id.detail_image));
 
-        Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
+        if (intent.getStringExtra(getString(R.string.key_event_image)) != null) {
+            Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
+
+        } else {
+            imageView.setImageResource(R.drawable.no_img);
+        }
+
+//        Picasso.with(getApplicationContext()).load(intent.getStringExtra(getString(R.string.key_event_image))).into(imageView);
 
     }
 

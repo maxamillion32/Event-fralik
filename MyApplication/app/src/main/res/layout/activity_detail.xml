@@ -10,10 +10,9 @@
     <!--android:background="@color/uber_black"-->
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         >
 
         <ImageView
@@ -35,6 +34,7 @@
             android:layout_marginEnd="3dp"
             android:text="REGISTER"
             android:elevation="30sp"
+            android:layout_below="@+id/detail_image"
 
             />
         <TextView
@@ -46,6 +46,7 @@
             android:textStyle="bold"
             android:textSize="22dp"
             android:layout_margin="8dp"
+            android:layout_below="@id/detail_button_register"
 
             />
 
@@ -56,15 +57,18 @@
             android:text="The Golden Retriever is a large-sized breed of dog bred as gun dogs to retrieve shot waterfowl such as ducks and upland game birds during hunting and shooting parties, and were named 'retriever' because of their ability to retrieve shot game undamaged. Golden Retrievers have an instinctive love of water, and are easy to train to basic or advanced obedience standards. "
             android:layout_margin="8dp"
             android:textColor="@android:color/black"
+            android:layout_below="@+id/detail_title"
             />
 
         <TextView
+            android:id="@+id/detail_text_view_when"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="WHEN"
             android:layout_margin="8dp"
             android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
+            android:layout_below="@+id/detail_description"
             />
 
         <TextView
@@ -74,15 +78,18 @@
             android:text="date and time"
             android:layout_marginLeft="8dp"
             android:textColor="@android:color/black"
+            android:layout_below="@+id/detail_text_view_when"
             />
 
         <TextView
+            android:id="@+id/detail_text_view_where"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="WHERE"
             android:layout_margin="8dp"
             android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
+            android:layout_below="@id/detail_when"
             />
 
         <TextView
@@ -92,15 +99,18 @@
             android:text="add1"
             android:layout_marginLeft="8dp"
             android:textColor="@android:color/black"
+            android:layout_below="@+id/detail_text_view_where"
             />
 
         <TextView
+            android:id="@+id/detail_text_view_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CATEGORY"
             android:layout_margin="8dp"
             android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
+            android:layout_below="@id/detail_add1"
             />
 
         <TextView
@@ -110,14 +120,18 @@
             android:text="Category"
             android:layout_marginLeft="8dp"
             android:textColor="@android:color/black"
+            android:layout_below="@+id/detail_text_view_category"
             />
+
         <TextView
+            android:id="@+id/detail_text_view_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="LOCATION"
             android:layout_margin="8dp"
             android:textColor="@android:color/holo_blue_light"
             android:textStyle="bold"
+            android:layout_below="@id/detail_category"
             />
 
 
@@ -156,8 +170,8 @@
             android:id="@+id/floating_action_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_above="@+id/detail_button_location"
             app:menu_animationDelayPerItem="55"
             app:menu_backgroundColor="@android:color/transparent"
             app:menu_buttonSpacing="0dp"
@@ -216,9 +230,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SHOW MAP"
+            android:layout_below="@+id/detail_text_view_location"
+
+
             />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </ScrollView>
