@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        app:tabTextColor="@android:color/black"
+        app:tabTextColor="@android:color/white"
         app:tabSelectedTextColor="@android:color/holo_red_light"
         app:tabMode="scrollable" />
 
@@ -27,8 +27,8 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1"
-        android:background="@android:color/black">
+        android:layout_weight="2"
+        android:background="@android:color/transparent">
 
         <!--<com.facebook.login.widget.LoginButton-->
             <!--android:id="@+id/login_button"-->

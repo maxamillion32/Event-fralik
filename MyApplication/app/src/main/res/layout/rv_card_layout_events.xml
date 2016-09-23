@@ -9,6 +9,8 @@
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardElevation="40sp"
     card_view:cardCornerRadius="5dp"
+    android:backgroundTint="@android:color/holo_green_light"
+
     >
 
     <!--android:backgroundTint="@android:color/holo_green_light"-->
@@ -25,6 +27,7 @@
                 android:layout_alignParentTop="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/no_img"
+                android:elevation="50sp"
                 />
 
             <TextView

@@ -134,38 +134,6 @@
             android:layout_below="@id/detail_category"
             />
 
-
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<com.google.android.gms.maps.MapView-->
-                <!--xmlns:map="http://schemas.android.com/apk/res-auto"-->
-                <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-                <!--android:id="@+id/detail_map"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="400dp"-->
-                <!--map:cameraBearing="112.5"-->
-                <!--map:cameraTargetLat="-33.796923"-->
-                <!--map:cameraTargetLng="150.922433"-->
-                <!--map:cameraTilt="30"-->
-                <!--map:cameraZoom="13"-->
-                <!--map:mapType="normal"-->
-                <!--map:uiCompass="false"-->
-                <!--map:uiRotateGestures="true"-->
-                <!--map:uiScrollGestures="true"-->
-                <!--map:uiTiltGestures="true"-->
-                <!--map:uiZoomControls="false"-->
-                <!--map:uiZoomGestures="true"-->
-                <!--&gt;-->
-
-
-            <!--</com.google.android.gms.maps.MapView>-->
-
-
-        <!--</LinearLayout>-->
-
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floating_action_menu"
             android:layout_width="wrap_content"
@@ -225,13 +193,19 @@
 
         </com.github.clans.fab.FloatingActionMenu>
 
+        <!--<com.uber.sdk.android.rides.RideRequestButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/floating_action_menu"-->
+            <!--app:ub__style="black"/>-->
+
         <Button
             android:id="@+id/detail_button_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SHOW MAP"
             android:layout_below="@+id/detail_text_view_location"
-
+            android:elevation="30sp"
 
             />
 
