@@ -15,7 +15,12 @@ EventHigh is an android application designed to encourage people to discover new
 <li>Google Play Services</li>
 </ul>
 
-![screenshot_20160923-154144](https://cloud.githubusercontent.com/assets/18383811/18807071/e29f03dc-81f2-11e6-9787-0974a5c30867.png)
+
+![screenshot_20160923-154235](https://cloud.githubusercontent.com/assets/18383811/18807103/f11e8ecc-81f3-11e6-84e8-8f2402a22e72.png) ![screenshot_20160923-154249](https://cloud.githubusercontent.com/assets/18383811/18807107/f13ba476-81f3-11e6-854b-7b8f91a6cb01.png)
+![screenshot_20160923-154307](https://cloud.githubusercontent.com/assets/18383811/18807105/f13a1a7a-81f3-11e6-9b91-82c12910b278.png) ![screenshot_20160923-154315](https://cloud.githubusercontent.com/assets/18383811/18807106/f13aba3e-81f3-11e6-9108-51c7914f7e95.png)
+![screenshot_20160923-154401](https://cloud.githubusercontent.com/assets/18383811/18807104/f138d872-81f3-11e6-90b3-5074749dfa15.png)
+
+
 
 
 
