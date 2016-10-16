@@ -1,4 +1,4 @@
-# EventHigh
+# Event- fralik
 <h3>App Info</h3>
 
 EventHigh is an android application designed to encourage people to discover new activites around them.
